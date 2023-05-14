@@ -10,7 +10,7 @@ TORTOISE_CONFIG: Final = {
     "connections": {"default": f"sqlite://{DB_PATH}"},
     "apps": {
         "models": {
-            "models": ["core.models.users"],
+            "models": ["core.models.users", "core.models.passwords"],
             "default_connection": "default",
         }
     },

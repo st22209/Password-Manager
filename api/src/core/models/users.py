@@ -9,7 +9,6 @@ class User(Model):
 
     id = UUIDField(pk=True, auto_generate=True)
     username = CharField(32)
-    password = TextField()
     auth_key_hash = TextField()
 
     class Meta:

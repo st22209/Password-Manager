@@ -4,8 +4,10 @@ __all__ = (
     "limiter",
     "InvalidDevmodeValue",
     "APIHTTPExceptions",
+    "User",
+    "Password",
 )
 
 from .db import TORTOISE_CONFIG
-from .models import PasswordManager, limiter
+from .models import PasswordManager, limiter, User, Password
 from .helpers import InvalidDevmodeValue, APIHTTPExceptions

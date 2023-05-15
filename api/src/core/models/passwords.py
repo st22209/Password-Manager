@@ -13,7 +13,7 @@ class Password(Model):
     username = CharField(64)
     password = TextField()
     salt = TextField()
-    url = CharField(256)
+    url = CharField(2048)
     note = CharField(2000)
     date_added = DatetimeField(auto_now_add=True)
     last_edited = DatetimeField(auto_now=True)

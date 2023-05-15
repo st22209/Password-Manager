@@ -1,5 +1,10 @@
+import re
+
 from tortoise.models import Model
+from pydantic import BaseModel, validator
 from tortoise.fields import UUIDField, CharField, TextField
+
+from core.helpers import APIHTTPExceptions
 
 
 class User(Model):
@@ -13,6 +18,38 @@ class User(Model):
 
     class Meta:
         table = "users"
+
+
+class NewUser(BaseModel):
+    username: str
+    auth_key_hash: str
+
+    @validator("username")
+    @classmethod
+    def validate_user_name(cls, username: str):
+        """
+        Takes in an username and checks if it is valid
+
+        Parameters:
+            username (str): The username of the person signing up
+
+        Returns:
+            str: If username is valid it returns the user
+
+        Raises:
+            InvalidUsernameError: If the username is invalid it raises an exception
+        """
+
+        if not username:
+            raise APIHTTPExceptions.INVALID_USERNAME_ERROR(username)
+        if username[0].isnumeric():
+            raise APIHTTPExceptions.INVALID_USERNAME_ERROR(username)
+        if not re.match(
+            "^(?=.{3,32}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$", username
+        ):
+            raise APIHTTPExceptions.INVALID_USERNAME_ERROR(username)
+
+        return username
 
 
 # Things to store locally

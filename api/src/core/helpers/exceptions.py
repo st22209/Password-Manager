@@ -48,14 +48,22 @@ class InvalidDevmodeValue(RichBaseException):
         sys.exit(1)
 
 
-class ExampleHTTPException(HTTPException):
-    def __init__(self, data: str) -> None:
+class InvalidUsernameError(HTTPException):
+    def __init__(self, username: str) -> None:
         status_code = 422
         detail = {
             "success": False,
-            "detail": "Failed because you gave me bad input",
-            "data_given": data,
-            "tip": "Get better skill issue",
+            "detail": "Username failed checks",
+            "username_provided": username,
+            "tip": "Follow the criteria",
+            "criteria": [
+                "username must be 3-32 characters long",
+                "no _ or . allowed at the beginning",
+                "no __ or _. or ._ or .. inside",
+                "no _ or . at the end",
+                "username can not start with a number",
+                "Allowed Characters: a-z, A-Z, 0-9, '.' and '_'",
+            ],
         }
 
         super().__init__(status_code, detail)
@@ -66,4 +74,4 @@ class APIHTTPExceptions:
     All the api's http exceptions in a class so they are all together
     """
 
-    EXAMPLE_HTTP_EXCEPTION = ExampleHTTPException
+    INVALID_USERNAME_ERROR = InvalidUsernameError

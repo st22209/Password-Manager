@@ -61,6 +61,7 @@ else:
         "reload": False,
         "port": PORT,
         "access_log": False,
+        "log_level": "critical",
     }
 
 

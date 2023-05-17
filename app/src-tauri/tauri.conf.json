@@ -27,7 +27,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.fusionsid.password1",
       "targets": "all"
     },
     "security": {
@@ -40,9 +40,9 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "password1",
-        "width": 800,
-        "height": 600
+        "title": "Password1",
+        "width": 987,
+        "height": 700
       }
     ]
   }

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Request
 from tortoise.exceptions import IntegrityError
 from tortoise.contrib.pydantic import pydantic_model_creator  # type: ignore
 
-from core import NewUser, User
+from core import NewUser, User, APIHTTPExceptions
 
 user_router = APIRouter(
     tags=[
@@ -10,6 +10,7 @@ user_router = APIRouter(
     ],
     prefix="/api/users",
 )
+user_pyd = pydantic_model_creator(User, name="User")
 
 
 @user_router.get("/")
@@ -24,15 +25,11 @@ async def create_new_user(request: Request, user_data: NewUser):
             username=user_data.username, auth_key_hash=user_data.auth_key_hash
         )
     except IntegrityError:
-        return {
-            "success": False,
-            "detail": "User failed to create! most likey because of a username conflict. ",
-            "tip": "Try using another username or trying again later.",
-        }
+        raise APIHTTPExceptions.USERNAME_CONFLICT_ERROR
 
-    user_pyd = await pydantic_model_creator(User, name="User").from_tortoise_orm(user)
+    pyd = await user_pyd.from_tortoise_orm(user)
     return {
         "success": True,
         "detail": "User created successfully!",
-        "created_user": user_pyd,
+        "created_user": pyd,
     }

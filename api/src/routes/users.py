@@ -1,3 +1,4 @@
+from pydantic import BaseModel
 from fastapi import APIRouter, Request
 from tortoise.exceptions import IntegrityError
 from tortoise.contrib.pydantic import pydantic_model_creator  # type: ignore
@@ -11,6 +12,11 @@ user_router = APIRouter(
     prefix="/api/users",
 )
 user_pyd = pydantic_model_creator(User, name="User")
+
+
+class AuthModification(BaseModel):
+    user_id: str
+    new_hash: str
 
 
 @user_router.get("/")
@@ -35,6 +41,18 @@ async def delete_user(request: Request, user_id: str):
     await user.delete()
 
     return {"success": True, "detail": "User deleted successfully!"}
+
+
+@user_router.patch("/")
+async def modify_user_authkey(request: Request, new_data: AuthModification):
+    exists = await User.exists(id=new_data.user_id)
+    if not exists:
+        raise APIHTTPExceptions.USER_NOT_FOUND(new_data.user_id)
+
+    user = await User.get(id=new_data.user_id)
+    await user.update_from_dict({"auth_key_hash": new_data.new_hash}).save()
+
+    return {"success": True, "detail": "User auth hash updated successfully!"}
 
 
 @user_router.post("/")

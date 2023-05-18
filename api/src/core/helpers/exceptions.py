@@ -81,6 +81,18 @@ class UsernameConflictError(HTTPException):
         super().__init__(status_code, detail)
 
 
+class UserNotFound(HTTPException):
+    def __init__(self, provided: str) -> None:
+        status_code = 404
+        detail = {
+            "success": False,
+            "detail": "The user you provided does not exist",
+            "provided_value": provided,
+            "tip": "Double check the value you are providing",
+        }
+        super().__init__(status_code, detail)
+
+
 class APIHTTPExceptions:
     """
     All the api's http exceptions in a class so they are all together
@@ -88,3 +100,4 @@ class APIHTTPExceptions:
 
     INVALID_USERNAME_ERROR = InvalidUsernameError
     USERNAME_CONFLICT_ERROR = UsernameConflictError
+    USER_NOT_FOUND = UserNotFound

@@ -14,8 +14,16 @@ user_pyd = pydantic_model_creator(User, name="User")
 
 
 @user_router.get("/")
-async def get_user(request: Request):
-    pass
+@user_router.delete("/")
+async def delete_user(request: Request, user_id: str):
+    exists = await User.exists(id=user_id)
+    if not exists:
+        raise APIHTTPExceptions.USER_NOT_FOUND(user_id)
+
+    user = User.filter(id=user_id)
+    await user.delete()
+
+    return {"success": True, "detail": "User deleted successfully!"}
 
 
 @user_router.post("/")

@@ -86,7 +86,19 @@ class UserNotFound(HTTPException):
         status_code = 404
         detail = {
             "success": False,
-            "detail": "The user you provided does not exist",
+            "detail": "The user id you provided does not exist",
+            "provided_value": provided,
+            "tip": "Double check the value you are providing",
+        }
+        super().__init__(status_code, detail)
+
+
+class PasswordNotFound(HTTPException):
+    def __init__(self, provided: str) -> None:
+        status_code = 404
+        detail = {
+            "success": False,
+            "detail": "The password id you provided does not exist",
             "provided_value": provided,
             "tip": "Double check the value you are providing",
         }
@@ -101,3 +113,4 @@ class APIHTTPExceptions:
     INVALID_USERNAME_ERROR = InvalidUsernameError
     USERNAME_CONFLICT_ERROR = UsernameConflictError
     USER_NOT_FOUND = UserNotFound
+    PASSWORD_NOT_FOUND = PasswordNotFound

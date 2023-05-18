@@ -69,9 +69,22 @@ class InvalidUsernameError(HTTPException):
         super().__init__(status_code, detail)
 
 
+class UsernameConflictError(HTTPException):
+    def __init__(self) -> None:
+        status_code = 409
+        detail = {
+            "success": False,
+            "detail": "User failed to create! most likey because of a username conflict. ",
+            "tip": "Try using another username or trying again later.",
+        }
+
+        super().__init__(status_code, detail)
+
+
 class APIHTTPExceptions:
     """
     All the api's http exceptions in a class so they are all together
     """
 
     INVALID_USERNAME_ERROR = InvalidUsernameError
+    USERNAME_CONFLICT_ERROR = UsernameConflictError

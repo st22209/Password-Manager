@@ -11,7 +11,7 @@ user_router = APIRouter(
     ],
     prefix="/api/users",
 )
-user_pyd = pydantic_model_creator(User, name="User")
+user_pyd = pydantic_model_creator(User)
 
 
 class AuthModification(BaseModel):
@@ -68,5 +68,5 @@ async def create_new_user(request: Request, user_data: NewUser):
     return {
         "success": True,
         "detail": "User created successfully!",
-        "created_user": pyd,
+        "user": pyd,
     }

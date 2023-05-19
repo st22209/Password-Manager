@@ -12,7 +12,7 @@ password_router = APIRouter(
     ],
     prefix="/api/passwords",
 )
-pswd_pyd = pydantic_model_creator(Password, name="User")
+pswd_pyd = pydantic_model_creator(Password)
 
 
 class NewPassword(BaseModel):

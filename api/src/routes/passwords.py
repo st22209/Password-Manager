@@ -37,7 +37,7 @@ async def create_password(request: Request, password_data: NewPassword):
 
 
 @password_router.get("/")
-async def get_user(request: Request, password_id: Optional[str] = None):
+async def get_password(request: Request, password_id: Optional[str] = None):
     if password_id is not None:
         exists = await Password.exists(id=password_id)
         if not exists:
@@ -51,3 +51,15 @@ async def get_user(request: Request, password_id: Optional[str] = None):
     passwords = await Password.all()
     pyd = [await pswd_pyd.from_tortoise_orm(pswd) for pswd in passwords]
     return {"success": True, "passwords": list(pyd)}
+
+
+@password_router.delete("/")
+async def delete_password(request: Request, password_id: str):
+    exists = await Password.exists(id=password_id)
+    if not exists:
+        raise APIHTTPExceptions.PASSWORD_NOT_FOUND(password_id)
+
+    password = Password.filter(id=password_id)
+    await password.delete()
+
+    return {"success": True, "detail": "Password deleted successfully!"}

@@ -2,6 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 from fastapi import APIRouter, Request
+from tortoise.exceptions import IntegrityError
 from tortoise.contrib.pydantic import pydantic_model_creator  # type: ignore
 
 from core import Password, APIHTTPExceptions
@@ -27,7 +28,11 @@ class NewPassword(BaseModel):
 
 @password_router.post("/")
 async def create_password(request: Request, password_data: NewPassword):
-    password = await Password.create(**dict(password_data))
+    try:
+        password = await Password.create(**dict(password_data))
+    except (ValueError, IntegrityError):
+        raise APIHTTPExceptions.USER_NOT_FOUND(password_data.owner_id)
+
     pyd = await pswd_pyd.from_tortoise_orm(password)
 
     return {

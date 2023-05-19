@@ -1,4 +1,6 @@
 from typing import Optional
+
+from pydantic import BaseModel
 from fastapi import APIRouter, Request
 from tortoise.contrib.pydantic import pydantic_model_creator  # type: ignore
 
@@ -11,6 +13,27 @@ password_router = APIRouter(
     prefix="/api/passwords",
 )
 pswd_pyd = pydantic_model_creator(Password, name="User")
+
+
+class NewPassword(BaseModel):
+    name: str
+    username: str
+    password: str
+    salt: str
+    url: str
+    note: str
+
+
+@password_router.post("/")
+async def create_password(request: Request, password_data: NewPassword):
+    password = await Password.create(**dict(password_data))
+    pyd = await pswd_pyd.from_tortoise_orm(password)
+
+    return {
+        "success": True,
+        "detail": "Successfully added password to database!",
+        "password": pyd,
+    }
 
 
 @password_router.get("/")

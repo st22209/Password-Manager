@@ -1,5 +1,11 @@
 from tortoise.models import Model
-from tortoise.fields import UUIDField, CharField, TextField, DatetimeField
+from tortoise.fields import (
+    UUIDField,
+    CharField,
+    TextField,
+    DatetimeField,
+    ForeignKeyField,
+)
 
 
 class Password(Model):
@@ -15,6 +21,7 @@ class Password(Model):
     salt = TextField()
     url = CharField(2048)
     note = CharField(2000, null=True)
+    owner = ForeignKeyField("models.User", "password_users")
     date_added = DatetimeField(auto_now_add=True)
     last_edited = DatetimeField(auto_now=True)
 

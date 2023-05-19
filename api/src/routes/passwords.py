@@ -22,6 +22,7 @@ class NewPassword(BaseModel):
     salt: str
     url: str
     note: str
+    owner_id: str
 
 
 @password_router.post("/")

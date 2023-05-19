@@ -43,13 +43,15 @@ async def create_password(request: Request, password_data: NewPassword):
 
 
 @password_router.get("/")
-async def get_password(request: Request, password_id: Optional[str] = None):
+async def get_password(
+    request: Request, owner_id: str, password_id: Optional[str] = None
+):
     if password_id is not None:
-        exists = await Password.exists(id=password_id)
+        exists = await Password.exists(id=password_id, owner_id=owner_id)
         if not exists:
             raise APIHTTPExceptions.PASSWORD_NOT_FOUND(password_id)
 
-        password = await Password.get(id=password_id)
+        password = await Password.get(id=password_id, owner_id=owner_id)
         pyd = await pswd_pyd.from_tortoise_orm(password)
 
         return {"success": True, "password": pyd}

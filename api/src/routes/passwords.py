@@ -69,3 +69,38 @@ async def delete_password(request: Request, password_id: str):
     await password.delete()
 
     return {"success": True, "detail": "Password deleted successfully!"}
+
+
+@password_router.patch("/")
+async def update_existing_password(
+    request: Request, password_id: str, owner_id: str, new_data: dict
+):
+    password = await Password.get(id=password_id, owner_id=owner_id)
+    if password is None:
+        raise APIHTTPExceptions.PASSWORD_NOT_FOUND(password_id)
+
+    update_data = {}
+    attrs = [
+        "name",
+        "username",
+        "password",
+        "salt",
+        "url",
+        "note",
+    ]
+    for attr, new_val in new_data.items():
+        if attr not in attrs:
+            continue
+
+        attrs.remove(attr)
+        update_data[attr] = new_val
+
+    NewPassword(
+        **update_data,
+        **{attr: getattr(password, attr) for attr in attrs},
+        owner_id=owner_id
+    )
+
+    await password.update_from_dict(update_data).save()
+
+    return {"success": True, "detail": "The password has been updated!"}

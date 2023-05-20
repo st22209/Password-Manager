@@ -4,7 +4,7 @@ from tortoise.models import Model
 from pydantic import BaseModel, validator
 from tortoise.fields import UUIDField, CharField, TextField
 
-from core.helpers import APIHTTPExceptions
+from core.helpers import APIHTTPExceptions, argon2_hash
 
 
 class User(Model):
@@ -51,10 +51,16 @@ class NewUser(BaseModel):
 
         return username
 
+    async def hashpass(self):
+        self.auth_key = await argon2_hash(self.auth_key)
+
 
 class AuthModification(BaseModel):
     user_id: str
     auth_key: str
+
+    async def hashpass(self):
+        self.auth_key = await argon2_hash(self.auth_key)
 
 
 # Things to store locally

@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Request
+from typing import Annotated
+
+from fastapi import APIRouter, Request, Header
 from tortoise.exceptions import IntegrityError
 from tortoise.contrib.pydantic import pydantic_model_creator  # type: ignore
 
-from core import NewUser, User, APIHTTPExceptions, AuthModification
+from core import NewUser, User, APIHTTPExceptions, AuthModification, verify_auth_key
 
 user_router = APIRouter(
     tags=[
@@ -20,12 +22,19 @@ async def get_user(request: Request, user_id: str):
         raise APIHTTPExceptions.USER_NOT_FOUND(user_id)
 
     pyd = await user_pyd.from_tortoise_orm(user)
+    delattr(pyd, "auth_key_hash")
 
     return {"success": True, "user": pyd}
 
 
 @user_router.delete("/")
-async def delete_user(request: Request, user_id: str):
+async def delete_user(
+    request: Request,
+    user_id: str,
+    auth_key: Annotated[str, Header()],
+):
+    await verify_auth_key(user_id, auth_key)
+
     user = await User.get(id=user_id)
     if user is None:
         raise APIHTTPExceptions.USER_NOT_FOUND(user_id)
@@ -36,8 +45,13 @@ async def delete_user(request: Request, user_id: str):
 
 
 @user_router.patch("/")
-async def modify_user_authkey(request: Request, new_data: AuthModification):
+async def modify_user_authkey(
+    request: Request,
+    new_data: AuthModification,
+    auth_key: Annotated[str, Header()],
+):
     await new_data.hashpass()
+    await verify_auth_key(new_data.user_id, auth_key)
 
     user = await User.get(id=new_data.user_id)
     if user is None:

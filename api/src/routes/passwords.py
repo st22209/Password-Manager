@@ -1,11 +1,11 @@
-from typing import Optional
+from typing import Optional, Annotated
 
 from pydantic import BaseModel
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Header
 from tortoise.exceptions import IntegrityError
 from tortoise.contrib.pydantic import pydantic_model_creator  # type: ignore
 
-from core import Password, APIHTTPExceptions
+from core import Password, APIHTTPExceptions, verify_auth_key
 
 password_router = APIRouter(
     tags=[
@@ -27,7 +27,13 @@ class NewPassword(BaseModel):
 
 
 @password_router.post("/")
-async def create_password(request: Request, password_data: NewPassword):
+async def create_password(
+    request: Request,
+    password_data: NewPassword,
+    auth_key: Annotated[str, Header()],
+):
+    await verify_auth_key(password_data.owner_id, auth_key)
+
     try:
         password = await Password.create(**dict(password_data))
     except (ValueError, IntegrityError):
@@ -44,14 +50,18 @@ async def create_password(request: Request, password_data: NewPassword):
 
 @password_router.get("/")
 async def get_password(
-    request: Request, owner_id: str, password_id: Optional[str] = None
+    request: Request,
+    owner_id: str,
+    auth_key: Annotated[str, Header()],
+    password_id: Optional[str] = None,
 ):
+    await verify_auth_key(owner_id, auth_key)
+
     if password_id is not None:
-        exists = await Password.exists(id=password_id, owner_id=owner_id)
-        if not exists:
+        password = await Password.get(id=password_id, owner_id=owner_id)
+        if password is None:
             raise APIHTTPExceptions.PASSWORD_NOT_FOUND(password_id)
 
-        password = await Password.get(id=password_id, owner_id=owner_id)
         pyd = await pswd_pyd.from_tortoise_orm(password)
 
         return {"success": True, "password": pyd}
@@ -62,12 +72,19 @@ async def get_password(
 
 
 @password_router.delete("/")
-async def delete_password(request: Request, password_id: str):
-    exists = await Password.exists(id=password_id)
+async def delete_password(
+    request: Request,
+    password_id: str,
+    owner_id: str,
+    auth_key: Annotated[str, Header()],
+):
+    await verify_auth_key(owner_id, auth_key)
+
+    exists = await Password.exists(id=password_id, owner_id=owner_id)
     if not exists:
         raise APIHTTPExceptions.PASSWORD_NOT_FOUND(password_id)
 
-    password = Password.filter(id=password_id)
+    password = Password.filter(id=password_id, owner_id=owner_id)
     await password.delete()
 
     return {"success": True, "detail": "Password deleted successfully!"}
@@ -75,8 +92,14 @@ async def delete_password(request: Request, password_id: str):
 
 @password_router.patch("/")
 async def update_existing_password(
-    request: Request, password_id: str, owner_id: str, new_data: dict
+    request: Request,
+    password_id: str,
+    owner_id: str,
+    new_data: dict,
+    auth_key: Annotated[str, Header()],
 ):
+    await verify_auth_key(owner_id, auth_key)
+
     password = await Password.get(id=password_id, owner_id=owner_id)
     if password is None:
         raise APIHTTPExceptions.PASSWORD_NOT_FOUND(password_id)
@@ -100,7 +123,7 @@ async def update_existing_password(
     NewPassword(
         **update_data,
         **{attr: getattr(password, attr) for attr in attrs},
-        owner_id=owner_id
+        owner_id=owner_id,
     )
 
     await password.update_from_dict(update_data).save()

@@ -80,11 +80,10 @@ async def delete_password(
 ):
     await verify_auth_key(owner_id, auth_key)
 
-    exists = await Password.exists(id=password_id, owner_id=owner_id)
-    if not exists:
+    password = await Password.get(id=password_id, owner_id=owner_id)
+    if password is None:
         raise APIHTTPExceptions.PASSWORD_NOT_FOUND(password_id)
 
-    password = Password.filter(id=password_id, owner_id=owner_id)
     await password.delete()
 
     return {"success": True, "detail": "Password deleted successfully!"}

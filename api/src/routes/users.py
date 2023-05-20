@@ -15,11 +15,10 @@ user_pyd = pydantic_model_creator(User)
 
 @user_router.get("/")
 async def get_user(request: Request, user_id: str):
-    exists = await User.exists(id=user_id)
-    if not exists:
+    user = await User.get(id=user_id)
+    if user is None:
         raise APIHTTPExceptions.USER_NOT_FOUND(user_id)
 
-    user = await User.get(id=user_id)
     pyd = await user_pyd.from_tortoise_orm(user)
 
     return {"success": True, "user": pyd}
@@ -27,11 +26,10 @@ async def get_user(request: Request, user_id: str):
 
 @user_router.delete("/")
 async def delete_user(request: Request, user_id: str):
-    exists = await User.exists(id=user_id)
-    if not exists:
+    user = await User.get(id=user_id)
+    if user is None:
         raise APIHTTPExceptions.USER_NOT_FOUND(user_id)
 
-    user = User.filter(id=user_id)
     await user.delete()
 
     return {"success": True, "detail": "User deleted successfully!"}
@@ -41,11 +39,9 @@ async def delete_user(request: Request, user_id: str):
 async def modify_user_authkey(request: Request, new_data: AuthModification):
     await new_data.hashpass()
 
-    exists = await User.exists(id=new_data.user_id)
-    if not exists:
-        raise APIHTTPExceptions.USER_NOT_FOUND(new_data.user_id)
-
     user = await User.get(id=new_data.user_id)
+    if user is None:
+        raise APIHTTPExceptions.USER_NOT_FOUND(new_data.user_id)
     await user.update_from_dict({"auth_key_hash": new_data.auth_key}).save()
 
     return {"success": True, "detail": "User auth hash updated successfully!"}

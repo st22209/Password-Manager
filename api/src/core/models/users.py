@@ -1,10 +1,11 @@
 import re
+from typing import Literal
 
 from tortoise.models import Model
 from pydantic import BaseModel, validator
 from tortoise.fields import UUIDField, CharField, TextField
 
-from core.helpers import APIHTTPExceptions, argon2_hash
+from core.helpers import APIHTTPExceptions, argon2_hash, argon2_verify
 
 
 class User(Model):
@@ -61,6 +62,16 @@ class AuthModification(BaseModel):
 
     async def hashpass(self):
         self.auth_key = await argon2_hash(self.auth_key)
+
+
+async def verify_auth_key(owner_id: str, auth_key: str) -> Literal[True]:
+    if (user := await User.get(id=owner_id)) is None:
+        raise APIHTTPExceptions.USER_NOT_FOUND(owner_id)
+
+    if not await argon2_verify(auth_key, user.auth_key_hash):
+        raise APIHTTPExceptions.INVALID_AUTH_KEY(auth_key)
+
+    return True
 
 
 # Things to store locally

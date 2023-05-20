@@ -22,7 +22,7 @@ class User(Model):
 
 class NewUser(BaseModel):
     username: str
-    auth_key_hash: str
+    auth_key: str
 
     @validator("username")
     @classmethod
@@ -50,6 +50,11 @@ class NewUser(BaseModel):
             raise APIHTTPExceptions.INVALID_USERNAME_ERROR(username)
 
         return username
+
+
+class AuthModification(BaseModel):
+    user_id: str
+    auth_key: str
 
 
 # Things to store locally

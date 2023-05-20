@@ -18,9 +18,7 @@ async def argon2_hash(text: str) -> str:
     """
 
     password_hasher = PasswordHasher()
-    hashed_output = password_hasher.hash(text)
-
-    return hashed_output
+    return password_hasher.hash(text)
 
 
 async def argon2_verify(password: str, hashed: str) -> bool:

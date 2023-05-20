@@ -12,12 +12,12 @@ def validation_function(username: str) -> bool:
         return False
     if username[0].isnumeric():
         return False
-    if not re.match(
-        "^(?=.{3,32}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$", username
-    ):
-        return False
-
-    return True
+    return bool(
+        re.match(
+            "^(?=.{3,32}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$",
+            username,
+        )
+    )
 
 
 INVALID_USERNAMES = [

@@ -16,6 +16,8 @@ export const AnimatedRoutes = () => {
 			>
 				<Routes location={location} key={location.pathname}>
 					<Route path="/" element={<pages.NewUser />}></Route>
+					<Route path="/login" element={<pages.Login />}></Route>
+					<Route path="/signup" element={<pages.Signup />}></Route>
 				</Routes>
 			</motion.div>
 		</AnimatePresence>

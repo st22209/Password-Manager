@@ -105,6 +105,18 @@ class PasswordNotFound(HTTPException):
         super().__init__(status_code, detail)
 
 
+class InvalidAuthKey(HTTPException):
+    def __init__(self, auth_key: str) -> None:
+        status_code = 401
+        detail = {
+            "success": False,
+            "detail": "The auth key provided is invalid",
+            "provided_value": auth_key,
+            "tip": "This means you entered the wrong master password, try again",
+        }
+        super().__init__(status_code, detail)
+
+
 class APIHTTPExceptions:
     """
     All the api's http exceptions in a class so they are all together
@@ -114,3 +126,4 @@ class APIHTTPExceptions:
     USERNAME_CONFLICT_ERROR = UsernameConflictError
     USER_NOT_FOUND = UserNotFound
     PASSWORD_NOT_FOUND = PasswordNotFound
+    INVALID_AUTH_KEY = InvalidAuthKey

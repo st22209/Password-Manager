@@ -36,8 +36,8 @@ async def create_password(
 
     try:
         password = await Password.create(**dict(password_data))
-    except (ValueError, IntegrityError):
-        raise APIHTTPExceptions.USER_NOT_FOUND(password_data.owner_id)
+    except (ValueError, IntegrityError) as e:
+        raise APIHTTPExceptions.USER_NOT_FOUND(password_data.owner_id) from e
 
     pyd = await pswd_pyd.from_tortoise_orm(password)
 

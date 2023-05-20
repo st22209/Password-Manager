@@ -69,8 +69,8 @@ async def create_new_user(request: Request, user_data: NewUser):
         user = await User.create(
             username=user_data.username, auth_key_hash=user_data.auth_key
         )
-    except IntegrityError:
-        raise APIHTTPExceptions.USERNAME_CONFLICT_ERROR
+    except IntegrityError as e:
+        raise APIHTTPExceptions.USERNAME_CONFLICT_ERROR from e
 
     pyd = await user_pyd.from_tortoise_orm(user)
     return {

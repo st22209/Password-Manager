@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import { AnimatePresence, motion } from "framer-motion";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import * as pages from "./pages";
 
 export const AnimatedRoutes = () => {
 	const location = useLocation();
@@ -14,7 +15,7 @@ export const AnimatedRoutes = () => {
 				transition={{ duration: 0.5 }}
 			>
 				<Routes location={location} key={location.pathname}>
-					<Route path="/" element={<></>}></Route>
+					<Route path="/" element={<pages.NewUser />}></Route>
 				</Routes>
 			</motion.div>
 		</AnimatePresence>

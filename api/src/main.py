@@ -22,23 +22,31 @@ app = PasswordManager(__version__)
 
 @app.on_event("startup")
 async def startup_event():
+    """
+    Runs on API startup and prints a message to console
+    """
+
     print("[bold blue]API has started!")
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
+    """
+    Runs on API shutdown and prints a message to console
+    """
+
     print("[bold blue]API has been shutdown!")
 
 
-# add all routers
+# iterate through routers list and include them all
 for route in router_list:
     app.include_router(router=route)
 
-# add all middleware
+# iterate through middleware list and include them all
 for middleware in middleware_list:
     app.add_middleware(middleware)
 
-# connect to db through tortoise orm
+# initialize tortoise orm and connect to database through it
 register_tortoise(
     app,
     config=TORTOISE_CONFIG,
@@ -46,9 +54,10 @@ register_tortoise(
     add_exception_handlers=True,
 )
 
+# constant for the port the api will use
 PORT: Final = 8443
 
-# check weather startup api in dev mode or not
+# check weather to startup api in dev mode or not
 devmode = os.environ.get("DEVMODE", "").lower()
 if devmode not in ["true", "false"]:
     raise InvalidDevmodeValue(provided=devmode)
@@ -66,4 +75,5 @@ else:
 
 
 if __name__ == "__main__":
+    # start uvicorn server with chosen config options
     uvicorn.run(**options)

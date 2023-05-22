@@ -90,7 +90,7 @@ const Signup = () => {
 
 						<input
 							className="bg-transparent w-full py-4 px-1 leading-tight focus:outline-none border-b-2 border-white text-[1.2rem] text-[#999999] mb-10"
-							type="text"
+							type="password"
 							value={password}
 							placeholder="Master Password"
 							onChange={(e) => setPassword(e.target.value)}

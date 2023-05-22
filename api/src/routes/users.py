@@ -16,13 +16,13 @@ user_pyd = pydantic_model_creator(User)
 
 
 @user_router.get("/")
-async def get_user(request: Request, user_id: str):
+async def get_user(request: Request, user_id: str, auth_key: str):
     user = await User.get(id=user_id)
     if user is None:
         raise APIHTTPExceptions.USER_NOT_FOUND(user_id)
 
+    await verify_auth_key(user_id, auth_key)
     pyd = await user_pyd.from_tortoise_orm(user)
-    delattr(pyd, "auth_key_hash")
 
     return {"success": True, "user": pyd}
 

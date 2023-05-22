@@ -14,6 +14,10 @@ type User = {
 type NewUserError = {
 	success: false;
 	type: string;
+	error: {
+		title: string,
+		body: string
+	}
 };
 
 async function signupSubmitCallback(

@@ -19,21 +19,33 @@ async function postNewUser(username: string, authKeyHash: string) {
     } catch (err) {
         return {
             success: false,
-            type: "api"
+            type: "api",
+            error: {
+                title: "Failed to make request!",
+                body: "The API seems to be down! Please check its online and on the right port"
+            }
         }
     }
 
     let response_json = await response.json();
-    if (response_json["success"] === false) {
+    if (response_json["detail"]["success"] === false) {
         if (response.status === 422) {
             return {
                 success: false,
-                type: "invalid"
+                type: "invalid",
+                error: {
+                    title: "Username Invalid",
+                    body: "The username failed the checks! Please ensure the username is valid"
+                }
             }
-        } else if (response.status === 407) {
+        } else if (response.status === 409) {
             return {
                 success: false,
-                type: "conflict"
+                type: "conflict",
+                error: {
+                    title: "Username Conflict",
+                    body: "There is already someone with this username, please use another"
+                }
             }
         }
     }

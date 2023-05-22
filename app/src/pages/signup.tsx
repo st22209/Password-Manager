@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { runValidation } from "../core";
 import { signupSubmitCallback } from "../core";
 
-
 type ErrorMessage = {
 	title: string;
 	body: string;
@@ -69,6 +68,7 @@ const Signup = () => {
 								username,
 								password
 							);
+							console.log(data)
 							if (data.success) {
 								resetFields();
 								return navigate(`/passwords/${data.user.id}`);
@@ -76,7 +76,7 @@ const Signup = () => {
 
 							// handle error from api
 							setShowErrorMessage(true);
-							setErrorMessage({ title: data.type, body: "sad" });
+							setErrorMessage({ title: data.error.title, body: data.error.body });
 						}}
 					>
 						<input

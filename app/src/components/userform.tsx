@@ -26,6 +26,8 @@ const UserForm = ({ title, submitCallback }: UserFormProps) => {
 				<div>
 					<form
 						onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+							setUsername("");
+							setPassword("");
 							submitCallback(e, username, password);
 						}}
 					>

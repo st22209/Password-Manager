@@ -1,4 +1,8 @@
 const BASE_URL = "http://127.0.0.1:8443/api"
+const STATUS_CODES = {
+    INVALID: 422,
+    CONFLICT: 409
+}
 
 async function postNewUser(username: string, authKeyHash: string) {
     const API_URL = `${BASE_URL}/users`
@@ -29,7 +33,7 @@ async function postNewUser(username: string, authKeyHash: string) {
 
     let response_json = await response.json();
     if (response_json["detail"]["success"] === false) {
-        if (response.status === 422) {
+        if (response.status === STATUS_CODES.INVALID) {
             return {
                 success: false,
                 type: "invalid",
@@ -38,7 +42,7 @@ async function postNewUser(username: string, authKeyHash: string) {
                     body: "The username failed the checks! Please ensure the username is valid"
                 }
             }
-        } else if (response.status === 409) {
+        } else if (response.status === STATUS_CODES.CONFLICT) {
             return {
                 success: false,
                 type: "conflict",

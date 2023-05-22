@@ -1,7 +1,13 @@
-import React from "react";
+import { UserForm } from "../components";
+import { signupSubmitCallback } from "../core";
+
 
 const Signup = () => {
-	return <div>Signup</div>;
+	return (
+		<>
+			<UserForm title="Signup" submitCallback={signupSubmitCallback} />
+		</>
+	);
 };
 
 export default Signup;

@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
-import { invoke } from "@tauri-apps/api/tauri";
+import * as pages from "./pages";
+import { Store } from "tauri-plugin-store-api";
 import { AnimatePresence, motion } from "framer-motion";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import * as pages from "./pages";
 
 export const AnimatedRoutes = () => {
 	const location = useLocation();
@@ -25,6 +24,8 @@ export const AnimatedRoutes = () => {
 };
 
 function App() {
+	new Store("salts.dat").save();
+
 	return (
 		<div>
 			<BrowserRouter>

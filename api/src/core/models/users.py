@@ -64,7 +64,7 @@ class AuthModification(BaseModel):
 
 
 async def verify_auth_key(owner_id: str, auth_key: str) -> None:
-    if (user := await User.get(id=owner_id)) is None:
+    if (user := await User.filter(id=owner_id).first()) is None:
         raise APIHTTPExceptions.USER_NOT_FOUND(owner_id)
 
     if not await argon2_verify(auth_key, user.auth_key_hash):

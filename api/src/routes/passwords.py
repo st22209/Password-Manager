@@ -58,7 +58,7 @@ async def get_password(
     await verify_auth_key(owner_id, auth_key)
 
     if password_id is not None:
-        password = await Password.get(id=password_id, owner_id=owner_id)
+        password = await Password.filter(id=password_id, owner_id=owner_id).first()
         if password is None:
             raise APIHTTPExceptions.PASSWORD_NOT_FOUND(password_id)
 
@@ -80,7 +80,7 @@ async def delete_password(
 ):
     await verify_auth_key(owner_id, auth_key)
 
-    password = await Password.get(id=password_id, owner_id=owner_id)
+    password = await Password.filter(id=password_id, owner_id=owner_id).first()
     if password is None:
         raise APIHTTPExceptions.PASSWORD_NOT_FOUND(password_id)
 
@@ -99,7 +99,7 @@ async def update_existing_password(
 ):
     await verify_auth_key(owner_id, auth_key)
 
-    password = await Password.get(id=password_id, owner_id=owner_id)
+    password = await Password.filter(id=password_id, owner_id=owner_id).first()
     if password is None:
         raise APIHTTPExceptions.PASSWORD_NOT_FOUND(password_id)
 

@@ -1,6 +1,6 @@
-import { bcrypt_hash } from "./kdf"
+import { bcrypt_hash, getUserKeys } from "./kdf"
 import { signupSubmitCallback } from "./formCallbacks"
-import { postNewUser } from "./requests"
+import { postNewUser, authGetUser } from "./requests"
 import { runValidation } from "./validators"
 
-export { bcrypt_hash, signupSubmitCallback, postNewUser, runValidation }
+export { bcrypt_hash, signupSubmitCallback, postNewUser, runValidation, getUserKeys, authGetUser }

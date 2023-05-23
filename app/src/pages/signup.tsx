@@ -68,7 +68,7 @@ const Signup = () => {
 								username,
 								password
 							);
-							console.log(data)
+
 							if (data.success) {
 								resetFields();
 								return navigate(`/passwords/${data.user.id}`);

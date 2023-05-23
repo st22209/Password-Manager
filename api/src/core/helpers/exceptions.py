@@ -86,7 +86,7 @@ class UserNotFound(HTTPException):
         status_code = 404
         detail = {
             "success": False,
-            "detail": "The user id you provided does not exist",
+            "detail": "The user id/username you provided does not exist",
             "provided_value": provided,
             "tip": "Double check the value you are providing",
         }

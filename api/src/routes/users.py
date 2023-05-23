@@ -16,8 +16,13 @@ user_pyd = pydantic_model_creator(User)
 
 
 @user_router.get("/")
-async def get_user(request: Request, user_id: str, auth_key: str):
-    user = await User.get(id=user_id)
+async def get_user(
+    request: Request, user_id: str, auth_key: str, username: bool = False
+):
+    if username:
+        user = await User.get(username=user_id)
+    else:
+        user = await User.get(id=user_id)
     if user is None:
         raise APIHTTPExceptions.USER_NOT_FOUND(user_id)
 

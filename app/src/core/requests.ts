@@ -16,7 +16,7 @@ type User = {
     };
 };
 
-type NewUserError = {
+type APIError = {
     success: false;
     type: string;
     error: {
@@ -24,6 +24,19 @@ type NewUserError = {
         body: string
     }
 };
+
+type Password = {
+    id: string
+    name: string
+    username: string
+    encrypted_password: string
+    salt: string
+    url: string
+    note: string
+    date_added: string
+    last_edited: string
+    owner_id: string
+}
 
 async function postNewUser(username: string, authKeyHash: string) {
     const API_URL = `${BASE_URL}/users`
@@ -78,7 +91,7 @@ async function postNewUser(username: string, authKeyHash: string) {
 
 }
 
-async function authGetUser(username: string, authKey: string): Promise<User | NewUserError> {
+async function authGetUser(username: string, authKey: string): Promise<User | APIError> {
     const API_URL = `${BASE_URL}/users?user_id=${username}&auth_key=${authKey}&username=true`
     let response_data = {
         method: "GET",
@@ -125,4 +138,58 @@ async function authGetUser(username: string, authKey: string): Promise<User | Ne
     return response_json
 }
 
-export { postNewUser, authGetUser }
+async function getPassword(owner_id: string, authKey: string): Promise<Password[] | APIError>;
+async function getPassword(owner_id: string, authKey: string, id: string): Promise<Password | APIError>;
+
+async function getPassword(owner_id: string, authKey: string, id?: string): Promise<unknown> {
+    let API_URL
+    (id === null || id === undefined)
+        ? API_URL = `${BASE_URL}/passwords?owner_id=${owner_id}&auth_key=${authKey}`
+        : API_URL = `${BASE_URL}/passwords?owner_id=${owner_id}&auth_key=${authKey}&password_id=${id}`
+
+    let response_data = {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+    }
+    let response;
+    try {
+        response = await fetch(API_URL, response_data);
+    } catch (err) {
+        return {
+            success: false,
+            type: "api",
+            error: {
+                title: "Failed to make request!",
+                body: "The API seems to be down! Please check its online and on the right port"
+            }
+        }
+    }
+    let response_json = await response.json();
+    if (response_json.success === undefined && response_json["detail"]["success"] === false) {
+        if (response.status === STATUS_CODES.NOT_FOUND) {
+            return {
+                success: false,
+                type: "notfound",
+                error: {
+                    title: "Username or Password Not Found",
+                    body: "Either the user account you are using is wrong or the password does not exist"
+                }
+            }
+        } else if (response.status === STATUS_CODES.UNAUTHORIZED) {
+            return {
+                success: false,
+                type: "wrongpass",
+                error: {
+                    title: "Wrong Password",
+                    body: "Your password is just wrong bro type it correctly"
+                }
+            }
+        }
+    }
+    return response_json
+}
+
+export { postNewUser, authGetUser, getPassword }

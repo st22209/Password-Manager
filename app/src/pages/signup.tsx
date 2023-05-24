@@ -2,8 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { runValidation } from "../core";
-import { signupSubmitCallback } from "../core";
+import { runValidation, getUserKeys, signupSubmitCallback } from "../core";
 
 type ErrorMessage = {
 	title: string;
@@ -13,12 +12,13 @@ type ErrorMessage = {
 const Signup = () => {
 	const navigate = useNavigate();
 
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const [showErrorMessage, setShowErrorMessage] = useState(false);
+	const [username, setUsername] = useState<string>("");
+	const [password, setPassword] = useState<string>("");
+
+	const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
 	const [errorMessage, setErrorMessage] = useState<ErrorMessage>({
-		title: "RIP error",
-		body: "tbh sounds like a skill issue i cant even like no cap bro",
+		title: "",
+		body: "",
 	});
 
 	function resetFields() {
@@ -29,6 +29,7 @@ const Signup = () => {
 	return (
 		<div>
 			<div className="absolute w-full h-full bg-user-background bg-cover"></div>
+
 			{showErrorMessage && (
 				<div className="z-40 absolute top-10 right-10 shadow-2xl">
 					<div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
@@ -71,12 +72,22 @@ const Signup = () => {
 
 							if (data.success) {
 								resetFields();
-								return navigate(`/passwords/${data.user.id}`);
+								let keys = await getUserKeys(
+									username,
+									password
+								);
+								let authKey = keys[1].hash;
+								return navigate(
+									`/passwords?user=${data.user.id}&auth=${authKey}`
+								);
 							}
 
 							// handle error from api
 							setShowErrorMessage(true);
-							setErrorMessage({ title: data.error.title, body: data.error.body });
+							setErrorMessage({
+								title: data.error.title,
+								body: data.error.body,
+							});
 						}}
 					>
 						<input

@@ -12,17 +12,19 @@ type ErrorMessage = {
 const Login = () => {
 	const navigate = useNavigate();
 
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const [showErrorMessage, setShowErrorMessage] = useState(false);
+	const [username, setUsername] = useState<string>("");
+	const [password, setPassword] = useState<string>("");
+
+	const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
 	const [errorMessage, setErrorMessage] = useState<ErrorMessage>({
-		title: "RIP error",
-		body: "tbh sounds like a skill issue i cant even like no cap bro",
+		title: "",
+		body: "",
 	});
 
 	return (
 		<div>
 			<div className="absolute w-full h-full bg-user-background bg-cover"></div>
+
 			{showErrorMessage && (
 				<div className="z-40 absolute top-10 right-10 shadow-2xl">
 					<div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
@@ -34,10 +36,10 @@ const Login = () => {
 				</div>
 			)}
 
-			<div className="absolute w-full h-full bg-user-background bg-cover"></div>
 			<Link className="absolute z-20 top-5 left-5 text-white" to="/">
 				Back To Home
 			</Link>
+
 			<div className="flex flex-col h-screen justify-center items-center relative z-10">
 				<h1 className="text-bold text-white text-[5rem]">Login</h1>
 				<div>
@@ -57,7 +59,7 @@ const Login = () => {
 
 							if (userValid.success) {
 								return navigate(
-									`/passwords/${userValid.user.id}`
+									`/passwords?user=${userValid.user.id}&auth=${authKey}`
 								);
 							}
 							setShowErrorMessage(true);

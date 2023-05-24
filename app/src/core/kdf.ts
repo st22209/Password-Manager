@@ -1,3 +1,4 @@
+import { AES, enc } from "crypto-ts";
 import { genSalt, hash } from "bcrypt-ts";
 import { Store } from "tauri-plugin-store-api";
 
@@ -7,6 +8,14 @@ async function bcrypt_hash(input: string, salt: string | null = null): Promise<{
     }
     let hashed = await hash(input, salt)
     return { hash: hashed, salt }
+}
+
+function encrypt(input: string, key: string) {
+    return AES.encrypt(input, key).toString();
+}
+
+function decrypt(encrypted_input: string, key: string) {
+    return AES.decrypt(encrypted_input, key).toString(enc.Utf8)
 }
 
 async function getUserKeys(
@@ -36,5 +45,5 @@ async function getUserKeys(
 }
 
 export {
-    bcrypt_hash, getUserKeys
+    bcrypt_hash, getUserKeys, encrypt, decrypt
 }

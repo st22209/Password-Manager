@@ -1,15 +1,26 @@
 import { useState } from "react";
 import { Navbar } from "../components";
-import { useSearchParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { GeneratePassword, AllPasswords, BackupVault } from "./";
+import { useLocation } from "react-router-dom";
 
 const Passwords = () => {
-	const [searchParams, _setSearchParams] = useSearchParams();
+	type Keys = {
+		vault: { hash: string; salt: string };
+		auth: { hash: string; salt: string };
+	};
 
-	const userId = searchParams.get("user");
-	const authKey = searchParams.get("auth");
+	const location = useLocation();
+	const data: {
+		user: {
+			id: string;
+			username: string;
+			auth_key_hash: string;
+		};
+		keys: Keys;
+	} = location.state;
 
-	if (userId == null || authKey == null) {
+	if (data.user == null || data.keys == null) {
 		return (
 			<div className="text-white">
 				<h1>ERROR PLEASE LOGIN</h1>
@@ -21,7 +32,7 @@ const Passwords = () => {
 	}
 
 	const pages = {
-		all: <AllPasswords />,
+		all: <AllPasswords user={data.user} keys={data.keys} />,
 		generate: <GeneratePassword />,
 		backup: <BackupVault />,
 	};

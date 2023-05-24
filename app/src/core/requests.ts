@@ -26,17 +26,27 @@ type APIError = {
 };
 
 type Password = {
-    id: string
-    name: string
-    username: string
-    encrypted_password: string
-    salt: string
-    url: string
-    note: string
-    date_added: string
-    last_edited: string
-    owner_id: string
-}
+    id: string;
+    name: string;
+    username: string;
+    encrypted_password: string;
+    salt: string;
+    url: string;
+    note: string;
+    date_added: string;
+    last_edited: string;
+    owner_id: string;
+};
+
+type SinglePassword = {
+    success: boolean;
+    password: Password
+};
+type PasswordArray = {
+    success: boolean;
+    passwords: Password[]
+};
+
 
 async function postNewUser(username: string, authKeyHash: string) {
     const API_URL = `${BASE_URL}/users`
@@ -138,8 +148,8 @@ async function authGetUser(username: string, authKey: string): Promise<User | AP
     return response_json
 }
 
-async function getPassword(owner_id: string, authKey: string): Promise<Password[] | APIError>;
-async function getPassword(owner_id: string, authKey: string, id: string): Promise<Password | APIError>;
+async function getPassword(owner_id: string, authKey: string): Promise<PasswordArray | APIError>;
+async function getPassword(owner_id: string, authKey: string, id: string): Promise<SinglePassword | APIError>;
 
 async function getPassword(owner_id: string, authKey: string, id?: string): Promise<unknown> {
     let API_URL

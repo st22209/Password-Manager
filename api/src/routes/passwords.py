@@ -66,7 +66,7 @@ async def get_password(
 
         return {"success": True, "password": pyd}
 
-    passwords = await Password.all()
+    passwords = await Password.filter(owner_id=owner_id)
     pyd = [await pswd_pyd.from_tortoise_orm(pswd) for pswd in passwords]
     return {"success": True, "passwords": list(pyd)}
 

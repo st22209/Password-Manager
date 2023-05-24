@@ -18,10 +18,15 @@ function decrypt(encrypted_input: string, key: string) {
     return AES.decrypt(encrypted_input, key).toString(enc.Utf8)
 }
 
+type Keys = {
+    vault: { hash: string, salt: string }
+    auth: { hash: string, salt: string }
+}
+
 async function getUserKeys(
     username: string,
     password: string,
-): Promise<Array<{ hash: string, salt: string }>> {
+): Promise<Keys> {
     let store = new Store("salts.dat");
 
     let vaultSalt: string | null = await store.get(`${username}-vault-salt`);
@@ -41,7 +46,7 @@ async function getUserKeys(
     let vaultKey = await bcrypt_hash(`${password}${username}`, vaultSalt);
     let authKey = await bcrypt_hash(`${vaultKey.hash}${username}`, authSalt);
 
-    return [vaultKey, authKey]
+    return { vault: vaultKey, auth: authKey }
 }
 
 export {

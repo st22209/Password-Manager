@@ -50,7 +50,7 @@ const Login = () => {
 							e.preventDefault();
 
 							let keys = await getUserKeys(username, password);
-							let authKey = keys[1].hash;
+							let authKey = keys.auth.hash;
 
 							let userValid = await authGetUser(
 								username,
@@ -58,9 +58,12 @@ const Login = () => {
 							);
 
 							if (userValid.success) {
-								return navigate(
-									`/passwords?user=${userValid.user.id}&auth=${authKey}`
-								);
+								return navigate("/passwords", {
+									state: {
+										user: userValid.user,
+										keys,
+									},
+								});
 							}
 							setShowErrorMessage(true);
 							setErrorMessage({

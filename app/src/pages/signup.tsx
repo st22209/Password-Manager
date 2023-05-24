@@ -76,10 +76,12 @@ const Signup = () => {
 									username,
 									password
 								);
-								let authKey = keys[1].hash;
-								return navigate(
-									`/passwords?user=${data.user.id}&auth=${authKey}`
-								);
+								return navigate("/passwords", {
+									state: {
+										user: data.user,
+										keys: keys,
+									},
+								});
 							}
 
 							// handle error from api

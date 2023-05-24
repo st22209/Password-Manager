@@ -1,6 +1,20 @@
 import React from "react";
+import { useEffect } from "react";
 
-const PasswordTable = () => {
+type Password = {
+	id: string;
+	name: string;
+	username: string;
+	encrypted_password: string;
+	salt: string;
+	url: string;
+	note: string;
+	date_added: string;
+	last_edited: string;
+	owner_id: string;
+};
+
+const PasswordTable = ({ passwords }: { passwords: Password[] }) => {
 	return (
 		<div className="flex flex-col">
 			<div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -31,7 +45,7 @@ const PasswordTable = () => {
 									<td className="whitespace-nowrap px-6 py-4 w-24">
 										<img
 											src="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.png?v=c78bd457575a"
-											alt=""
+											alt="Website icon"
 										/>
 									</td>
 									<td className="whitespace-nowrap px-6 py-4 font-medium">
@@ -47,6 +61,30 @@ const PasswordTable = () => {
 										11/06/23 10:24 PM
 									</td>
 								</tr>
+								{passwords.map((password, index) => {
+									return (
+										<tr className="border-b">
+											<td className="whitespace-nowrap px-6 py-4 w-24">
+												<img
+													src="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.png?v=c78bd457575a"
+													alt="Website icon"
+												/>
+											</td>
+											<td className="whitespace-nowrap px-6 py-4 font-medium">
+												{password.name}
+											</td>
+											<td className="whitespace-nowrap px-6 py-4">
+												{password.url}
+											</td>
+											<td className="whitespace-nowrap px-6 py-4">
+												{password.last_edited}
+											</td>
+											<td className="whitespace-nowrap px-6 py-4">
+												{password.date_added}
+											</td>
+										</tr>
+									);
+								})}
 							</tbody>
 						</table>
 					</div>

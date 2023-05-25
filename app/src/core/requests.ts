@@ -49,11 +49,11 @@ type NewPassword = {
 };
 
 type SinglePassword = {
-    success: boolean;
+    success: true;
     password: Password
 };
 type PasswordArray = {
-    success: boolean;
+    success: true;
     passwords: Password[]
 };
 
@@ -158,7 +158,6 @@ async function postNewPassword(authKeyHash: string, passwordData: NewPassword) {
             }
         }
     }
-    console.log(response_json)
     return response_json
 
 }
@@ -264,6 +263,52 @@ async function getPassword(owner_id: string, authKey: string, id?: string): Prom
     return response_json
 }
 
+async function deletePassword(userId: string, passwordId: string, authKey: string): Promise<{ success: true, detail: string } | APIError> {
+    const API_URL = `${BASE_URL}/passwords?owner_id=${userId}&auth_key=${authKey}&password_id=${passwordId}`
+    let response_data = {
+        method: "DELETE",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+    }
+    let response;
+    try {
+        response = await fetch(API_URL, response_data);
+    } catch (err) {
+        return {
+            success: false,
+            type: "api",
+            error: {
+                title: "Failed to make request!",
+                body: "The API seems to be down! Please check its online and on the right port"
+            }
+        }
+    }
+    let response_json = await response.json();
+    if (response_json.success === undefined && response_json["detail"]["success"] === false) {
+        if (response.status === STATUS_CODES.NOT_FOUND) {
+            return {
+                success: false,
+                type: "notfound",
+                error: {
+                    title: "Username or Password Not Found",
+                    body: "e"
+                }
+            }
+        } else if (response.status === STATUS_CODES.UNAUTHORIZED) {
+            return {
+                success: false,
+                type: "wrongpass",
+                error: {
+                    title: "Wrong Password",
+                    body: "Your password is just wrong bro type it correctly"
+                }
+            }
+        }
+    }
+    return response_json
+}
 
 
-export { postNewUser, authGetUser, getPassword, postNewPassword }
+export { postNewUser, authGetUser, getPassword, postNewPassword, deletePassword }

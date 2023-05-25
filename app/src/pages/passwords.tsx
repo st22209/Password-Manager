@@ -36,17 +36,18 @@ const Passwords = () => {
 		generate: <GeneratePassword />,
 		backup: <BackupVault />,
 	};
-	const [currentPage, setCurrentPage] = useState<
-		"all" | "generate" | "backup"
-	>("all");
+	const [currentPage, setCurrentPage] = useState<"all" | "generate" | "backup">(
+		"all"
+	);
 
 	return (
 		<div>
-			<div className="flex w-screen h-screen">
+			<div
+				style={{ gridTemplateColumns: "25vw 75vw" }}
+				className="grid grid-cols-2 w-screen h-screen"
+			>
 				<Navbar page={currentPage} setPage={setCurrentPage} />
-				<div className="bg-white w-[75vw] h-full">
-					{pages[currentPage]}
-				</div>
+				<div className="bg-white overflow-y-auto">{pages[currentPage]}</div>
 			</div>
 		</div>
 	);

@@ -1,14 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 const Navbar = ({
 	page,
 	setPage,
 }: {
 	page: string;
-	setPage: React.Dispatch<
-		React.SetStateAction<"all" | "generate" | "backup">
-	>;
+	setPage: React.Dispatch<React.SetStateAction<"all" | "generate" | "backup">>;
 }) => {
 	const navigate = useNavigate();
 
@@ -33,12 +32,9 @@ const Navbar = ({
 						>
 							<FontAwesomeIcon
 								className="opacity-75"
-								// @ts-ignore
-								icon={["fa-solid", "fa-list"]}
+								icon={"fa-solid fa-list" as IconProp}
 							/>
-							<span className="ml-4 opacity-75">
-								All Passwords
-							</span>
+							<span className="ml-4 opacity-75">All Passwords</span>
 						</button>
 
 						<button
@@ -54,9 +50,7 @@ const Navbar = ({
 								// @ts-ignore
 								icon={["fa-solid", "fa-lock"]}
 							/>
-							<span className="ml-4 opacity-75">
-								Password Generator
-							</span>
+							<span className="ml-4 opacity-75">Password Generator</span>
 						</button>
 
 						<button
@@ -72,9 +66,7 @@ const Navbar = ({
 								// @ts-ignore
 								icon={["fa-solid", "fa-floppy-disk"]}
 							/>
-							<span className="ml-4 opacity-75">
-								Backup Vault
-							</span>
+							<span className="ml-4 opacity-75">Backup Vault</span>
 						</button>
 
 						<button

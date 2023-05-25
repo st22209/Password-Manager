@@ -41,6 +41,7 @@ const AllPasswords = ({
 	};
 	keys: Keys;
 }) => {
+	const [showModal, setShowModal] = useState<boolean>(false);
 	const [passwords, setPasswords] = useState<Password[]>([]);
 
 	useEffect(() => {
@@ -49,25 +50,35 @@ const AllPasswords = ({
 			if (data.success) {
 				setPasswords(data.passwords);
 			}
-		}
-		fetchData()
-		const loop = setInterval(fetchData, 10e3);
+		};
+		fetchData();
+		const loop = setInterval(fetchData, 3e3);
 		return () => clearInterval(loop);
 	}, []);
 
 	return (
 		<div>
+			<PasswordForm
+				show={showModal}
+				setStateFunction={setShowModal}
+				keys={keys}
+				owner_id={user.id}
+			/>
+
 			<div className="p-10 flex-col flex">
 				<div>
 					<h1 className="font-bold text-[2rem] float-left mb-5">
 						All Passwords
 					</h1>
-					<button className="text-bold px-7 py-2.5 float-right text-lg font-semibold rounded bg-[#505BAF] text-white">
+					<button
+						onClick={() => setShowModal(true)}
+						className="text-bold px-7 py-2.5 float-right text-lg font-semibold rounded bg-[#505BAF] text-white"
+					>
 						New Password
 					</button>
 				</div>
 				<div className="mt-5">
-					<PasswordTable passwords={passwords} vault_key={keys.vault.hash}/>
+					<PasswordTable passwords={passwords} data={{ user, keys }} />
 				</div>
 			</div>
 		</div>

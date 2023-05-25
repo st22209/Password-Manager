@@ -3,60 +3,59 @@ const STATUS_CODES = {
     INVALID: 422,
     CONFLICT: 409,
     NOT_FOUND: 404,
-    UNAUTHORIZED: 401
+    UNAUTHORIZED: 401,
 }
 
 type User = {
-    success: true;
-    detail: string;
+    success: true
+    detail: string
     user: {
-        id: string;
-        username: string;
-        auth_key_hash: string;
-    };
-};
+        id: string
+        username: string
+        auth_key_hash: string
+    }
+}
 
 type APIError = {
-    success: false;
-    type: string;
+    success: false
+    type: string
     error: {
-        title: string,
+        title: string
         body: string
     }
-};
+}
 
 type Password = {
-    id: string;
-    name: string;
-    username: string;
-    password: string;
-    salt: string;
-    url: string;
-    note: string;
-    date_added: string;
-    last_edited: string;
-    owner_id: string;
-};
+    id: string
+    name: string
+    username: string
+    password: string
+    salt: string
+    url: string
+    note: string
+    date_added: string
+    last_edited: string
+    owner_id: string
+}
 
 type NewPassword = {
-    name: string;
-    username: string;
-    password: string;
-    salt: string;
-    url: string;
-    note: string;
-    owner_id: string;
-};
+    name: string
+    username: string
+    password: string
+    salt: string
+    url: string
+    note: string
+    owner_id: string
+}
 
 type SinglePassword = {
-    success: true;
+    success: true
     password: Password
-};
+}
 type PasswordArray = {
-    success: true;
+    success: true
     passwords: Password[]
-};
-
+}
 
 async function postNewUser(username: string, authKeyHash: string) {
     const API_URL = `${BASE_URL}/users`
@@ -67,25 +66,25 @@ async function postNewUser(username: string, authKeyHash: string) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            "username": username,
-            "auth_key": authKeyHash
-        })
+            username: username,
+            auth_key: authKeyHash,
+        }),
     }
-    let response;
+    let response
     try {
-        response = await fetch(API_URL, response_data);
+        response = await fetch(API_URL, response_data)
     } catch (err) {
         return {
             success: false,
             type: "api",
             error: {
                 title: "Failed to make request!",
-                body: "The API seems to be down! Please check its online and on the right port"
-            }
+                body: "The API seems to be down! Please check its online and on the right port",
+            },
         }
     }
 
-    let response_json = await response.json();
+    let response_json = await response.json()
     if (response_json["detail"]["success"] === false) {
         if (response.status === STATUS_CODES.INVALID) {
             return {
@@ -93,8 +92,8 @@ async function postNewUser(username: string, authKeyHash: string) {
                 type: "invalid",
                 error: {
                     title: "Username Invalid",
-                    body: "The username failed the checks! Please ensure the username is valid"
-                }
+                    body: "The username failed the checks! Please ensure the username is valid",
+                },
             }
         } else if (response.status === STATUS_CODES.CONFLICT) {
             return {
@@ -102,15 +101,13 @@ async function postNewUser(username: string, authKeyHash: string) {
                 type: "conflict",
                 error: {
                     title: "Username Conflict",
-                    body: "There is already someone with this username, please use another"
-                }
+                    body: "There is already someone with this username, please use another",
+                },
             }
         }
     }
     return response_json
-
 }
-
 
 async function postNewPassword(authKeyHash: string, passwordData: NewPassword) {
     const API_URL = `${BASE_URL}/passwords?auth_key=${authKeyHash}`
@@ -120,23 +117,23 @@ async function postNewPassword(authKeyHash: string, passwordData: NewPassword) {
             Accept: "application/json",
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(passwordData)
+        body: JSON.stringify(passwordData),
     }
-    let response;
+    let response
     try {
-        response = await fetch(API_URL, response_data);
+        response = await fetch(API_URL, response_data)
     } catch (err) {
         return {
             success: false,
             type: "api",
             error: {
                 title: "Failed to make request!",
-                body: "The API seems to be down! Please check its online and on the right port"
-            }
+                body: "The API seems to be down! Please check its online and on the right port",
+            },
         }
     }
 
-    let response_json = await response.json();
+    let response_json = await response.json()
     if (response_json["detail"]["success"] === false) {
         if (response.status === STATUS_CODES.NOT_FOUND) {
             return {
@@ -144,8 +141,8 @@ async function postNewPassword(authKeyHash: string, passwordData: NewPassword) {
                 type: "notfound",
                 error: {
                     title: "Username Not Found",
-                    body: "aint no account exist with this username. You sure you spelt it right?"
-                }
+                    body: "aint no account exist with this username. You sure you spelt it right?",
+                },
             }
         } else if (response.status === STATUS_CODES.UNAUTHORIZED) {
             return {
@@ -153,16 +150,18 @@ async function postNewPassword(authKeyHash: string, passwordData: NewPassword) {
                 type: "wrongpass",
                 error: {
                     title: "Wrong Password",
-                    body: "Your password is just wrong bro type it correctly"
-                }
+                    body: "Your password is just wrong bro type it correctly",
+                },
             }
         }
     }
     return response_json
-
 }
 
-async function authGetUser(username: string, authKey: string): Promise<User | APIError> {
+async function authGetUser(
+    username: string,
+    authKey: string
+): Promise<User | APIError> {
     const API_URL = `${BASE_URL}/users?user_id=${username}&auth_key=${authKey}&username=true`
     let response_data = {
         method: "GET",
@@ -171,29 +170,32 @@ async function authGetUser(username: string, authKey: string): Promise<User | AP
             "Content-Type": "application/json",
         },
     }
-    let response;
+    let response
     try {
-        response = await fetch(API_URL, response_data);
+        response = await fetch(API_URL, response_data)
     } catch (err) {
         return {
             success: false,
             type: "api",
             error: {
                 title: "Failed to make request!",
-                body: "The API seems to be down! Please check its online and on the right port"
-            }
+                body: "The API seems to be down! Please check its online and on the right port",
+            },
         }
     }
-    let response_json = await response.json();
-    if (response_json.success === undefined && response_json["detail"]["success"] === false) {
+    let response_json = await response.json()
+    if (
+        response_json.success === undefined &&
+        response_json["detail"]["success"] === false
+    ) {
         if (response.status === STATUS_CODES.NOT_FOUND) {
             return {
                 success: false,
                 type: "notfound",
                 error: {
                     title: "Username Not Found",
-                    body: "aint no account exist with this username. You sure you spelt it right?"
-                }
+                    body: "aint no account exist with this username. You sure you spelt it right?",
+                },
             }
         } else if (response.status === STATUS_CODES.UNAUTHORIZED) {
             return {
@@ -201,22 +203,33 @@ async function authGetUser(username: string, authKey: string): Promise<User | AP
                 type: "wrongpass",
                 error: {
                     title: "Wrong Password",
-                    body: "Your password is just wrong bro type it correctly"
-                }
+                    body: "Your password is just wrong bro type it correctly",
+                },
             }
         }
     }
     return response_json
 }
 
-async function getPassword(owner_id: string, authKey: string): Promise<PasswordArray | APIError>;
-async function getPassword(owner_id: string, authKey: string, id: string): Promise<SinglePassword | APIError>;
+async function getPassword(
+    owner_id: string,
+    authKey: string
+): Promise<PasswordArray | APIError>
+async function getPassword(
+    owner_id: string,
+    authKey: string,
+    id: string
+): Promise<SinglePassword | APIError>
 
-async function getPassword(owner_id: string, authKey: string, id?: string): Promise<unknown> {
+async function getPassword(
+    owner_id: string,
+    authKey: string,
+    id?: string
+): Promise<unknown> {
     let API_URL
-    (id === null || id === undefined)
-        ? API_URL = `${BASE_URL}/passwords?owner_id=${owner_id}&auth_key=${authKey}`
-        : API_URL = `${BASE_URL}/passwords?owner_id=${owner_id}&auth_key=${authKey}&password_id=${id}`
+    id === null || id === undefined
+        ? (API_URL = `${BASE_URL}/passwords?owner_id=${owner_id}&auth_key=${authKey}`)
+        : (API_URL = `${BASE_URL}/passwords?owner_id=${owner_id}&auth_key=${authKey}&password_id=${id}`)
 
     let response_data = {
         method: "GET",
@@ -225,29 +238,32 @@ async function getPassword(owner_id: string, authKey: string, id?: string): Prom
             "Content-Type": "application/json",
         },
     }
-    let response;
+    let response
     try {
-        response = await fetch(API_URL, response_data);
+        response = await fetch(API_URL, response_data)
     } catch (err) {
         return {
             success: false,
             type: "api",
             error: {
                 title: "Failed to make request!",
-                body: "The API seems to be down! Please check its online and on the right port"
-            }
+                body: "The API seems to be down! Please check its online and on the right port",
+            },
         }
     }
-    let response_json = await response.json();
-    if (response_json.success === undefined && response_json["detail"]["success"] === false) {
+    let response_json = await response.json()
+    if (
+        response_json.success === undefined &&
+        response_json["detail"]["success"] === false
+    ) {
         if (response.status === STATUS_CODES.NOT_FOUND) {
             return {
                 success: false,
                 type: "notfound",
                 error: {
                     title: "Username or Password Not Found",
-                    body: "Either the user account you are using is wrong or the password does not exist"
-                }
+                    body: "Either the user account you are using is wrong or the password does not exist",
+                },
             }
         } else if (response.status === STATUS_CODES.UNAUTHORIZED) {
             return {
@@ -255,15 +271,19 @@ async function getPassword(owner_id: string, authKey: string, id?: string): Prom
                 type: "wrongpass",
                 error: {
                     title: "Wrong Password",
-                    body: "Your password is just wrong bro type it correctly"
-                }
+                    body: "Your password is just wrong bro type it correctly",
+                },
             }
         }
     }
     return response_json
 }
 
-async function deletePassword(userId: string, passwordId: string, authKey: string): Promise<{ success: true, detail: string } | APIError> {
+async function deletePassword(
+    userId: string,
+    passwordId: string,
+    authKey: string
+): Promise<{ success: true; detail: string } | APIError> {
     const API_URL = `${BASE_URL}/passwords?owner_id=${userId}&auth_key=${authKey}&password_id=${passwordId}`
     let response_data = {
         method: "DELETE",
@@ -272,29 +292,32 @@ async function deletePassword(userId: string, passwordId: string, authKey: strin
             "Content-Type": "application/json",
         },
     }
-    let response;
+    let response
     try {
-        response = await fetch(API_URL, response_data);
+        response = await fetch(API_URL, response_data)
     } catch (err) {
         return {
             success: false,
             type: "api",
             error: {
                 title: "Failed to make request!",
-                body: "The API seems to be down! Please check its online and on the right port"
-            }
+                body: "The API seems to be down! Please check its online and on the right port",
+            },
         }
     }
-    let response_json = await response.json();
-    if (response_json.success === undefined && response_json["detail"]["success"] === false) {
+    let response_json = await response.json()
+    if (
+        response_json.success === undefined &&
+        response_json["detail"]["success"] === false
+    ) {
         if (response.status === STATUS_CODES.NOT_FOUND) {
             return {
                 success: false,
                 type: "notfound",
                 error: {
                     title: "Username or Password Not Found",
-                    body: "e"
-                }
+                    body: "e",
+                },
             }
         } else if (response.status === STATUS_CODES.UNAUTHORIZED) {
             return {
@@ -302,13 +325,18 @@ async function deletePassword(userId: string, passwordId: string, authKey: strin
                 type: "wrongpass",
                 error: {
                     title: "Wrong Password",
-                    body: "Your password is just wrong bro type it correctly"
-                }
+                    body: "Your password is just wrong bro type it correctly",
+                },
             }
         }
     }
     return response_json
 }
 
-
-export { postNewUser, authGetUser, getPassword, postNewPassword, deletePassword }
+export {
+    postNewUser,
+    authGetUser,
+    getPassword,
+    postNewPassword,
+    deletePassword,
+}

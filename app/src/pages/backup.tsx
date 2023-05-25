@@ -1,7 +1,7 @@
-import React from "react";
+import React from "react"
 
 const BackupVault = () => {
-	return <div>BackupVault</div>;
-};
+    return <div>BackupVault</div>
+}
 
-export default BackupVault;
+export default BackupVault

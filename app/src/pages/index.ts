@@ -6,4 +6,12 @@ import GeneratePassword from "./generate"
 import AllPasswords from "./all_passwords"
 import BackupVault from "./backup"
 
-export { NewUser, Login, Signup, Passwords, GeneratePassword, AllPasswords, BackupVault }
+export {
+    NewUser,
+    Login,
+    Signup,
+    Passwords,
+    GeneratePassword,
+    AllPasswords,
+    BackupVault,
+}

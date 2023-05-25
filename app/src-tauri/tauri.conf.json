@@ -1,58 +1,58 @@
 {
-  "build": {
-    "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build",
-    "devPath": "http://localhost:1420",
-    "distDir": "../dist",
-    "withGlobalTauri": false
-  },
-  "package": {
-    "productName": "password1",
-    "version": "0.0.0"
-  },
-  "tauri": {
-    "allowlist": {
-      "clipboard": {
-        "all": true,
-        "writeText": true,
-        "readText": true
-      },
-      "all": false,
-      "shell": {
-        "all": false,
-        "open": true
-      }
+    "build": {
+        "beforeDevCommand": "npm run dev",
+        "beforeBuildCommand": "npm run build",
+        "devPath": "http://localhost:1420",
+        "distDir": "../dist",
+        "withGlobalTauri": false
     },
-    "bundle": {
-      "active": true,
-      "icon": [
-        "icons/icon.icns",
-        "icons/icon.png",
-        "icons/1024.png",
-        "icons/512.png",
-        "icons/256.png",
-        "icons/128.png",
-        "icons/64.png",
-        "icons/32.png",
-        "icons/16.png"
-      ],
-      "identifier": "com.fusionsid.password1",
-      "targets": "all"
+    "package": {
+        "productName": "password1",
+        "version": "0.0.0"
     },
-    "security": {
-      "csp": null
-    },
-    "updater": {
-      "active": false
-    },
-    "windows": [
-      {
-        "fullscreen": false,
-        "resizable": true,
-        "title": "Password1",
-        "width": 1295,
-        "height": 785
-      }
-    ]
-  }
+    "tauri": {
+        "allowlist": {
+            "clipboard": {
+                "all": true,
+                "writeText": true,
+                "readText": true
+            },
+            "all": false,
+            "shell": {
+                "all": false,
+                "open": true
+            }
+        },
+        "bundle": {
+            "active": true,
+            "icon": [
+                "icons/icon.icns",
+                "icons/icon.png",
+                "icons/1024.png",
+                "icons/512.png",
+                "icons/256.png",
+                "icons/128.png",
+                "icons/64.png",
+                "icons/32.png",
+                "icons/16.png"
+            ],
+            "identifier": "com.fusionsid.password1",
+            "targets": "all"
+        },
+        "security": {
+            "csp": null
+        },
+        "updater": {
+            "active": false
+        },
+        "windows": [
+            {
+                "fullscreen": false,
+                "resizable": true,
+                "title": "Password1",
+                "width": 1295,
+                "height": 785
+            }
+        ]
+    }
 }

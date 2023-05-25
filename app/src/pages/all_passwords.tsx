@@ -1,7 +1,7 @@
 import { PasswordForm, PasswordTable } from "../components";
 import React from "react";
 import { useEffect, useState } from "react";
-import { getPassword } from "../core";
+import { decrypt, bcrypt_hash, getPassword, encrypt } from "../core";
 
 type Keys = {
 	vault: { hash: string; salt: string };
@@ -12,7 +12,7 @@ type Password = {
 	id: string;
 	name: string;
 	username: string;
-	encrypted_password: string;
+	password: string;
 	salt: string;
 	url: string;
 	note: string;
@@ -42,15 +42,16 @@ const AllPasswords = ({
 	keys: Keys;
 }) => {
 	const [passwords, setPasswords] = useState<Password[]>([]);
-	console.log(keys.auth.hash, user.id)
+
 	useEffect(() => {
-		const loop = setInterval(async () => {
+		const fetchData = async () => {
 			let data = await getPassword(user.id, keys.auth.hash);
 			if (data.success) {
-				console.log(data.passwords)
 				setPasswords(data.passwords);
 			}
-		}, 10e3);
+		}
+		fetchData()
+		const loop = setInterval(fetchData, 10e3);
 		return () => clearInterval(loop);
 	}, []);
 
@@ -66,7 +67,7 @@ const AllPasswords = ({
 					</button>
 				</div>
 				<div className="mt-5">
-					<PasswordTable passwords={passwords} />
+					<PasswordTable passwords={passwords} vault_key={keys.vault.hash}/>
 				</div>
 			</div>
 		</div>

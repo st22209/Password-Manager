@@ -1,11 +1,12 @@
 import React from "react";
 import { useEffect } from "react";
+import { decrypt, bcrypt_hash, getPassword, encrypt } from "../core";
 
 type Password = {
 	id: string;
 	name: string;
 	username: string;
-	encrypted_password: string;
+	password: string;
 	salt: string;
 	url: string;
 	note: string;
@@ -14,7 +15,7 @@ type Password = {
 	owner_id: string;
 };
 
-const PasswordTable = ({ passwords }: { passwords: Password[] }) => {
+const PasswordTable = ({ passwords, vault_key }: { passwords: Password[], vault_key:string }) => {
 	return (
 		<div className="flex flex-col">
 			<div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -63,7 +64,19 @@ const PasswordTable = ({ passwords }: { passwords: Password[] }) => {
 								</tr>
 								{passwords.map((password, index) => {
 									return (
-										<tr className="border-b">
+										<tr
+											key={index}
+											onClick={async () => {
+												let key = await bcrypt_hash(vault_key, password.salt)
+												console.log(
+													password.password,
+													password.salt,
+													decrypt(password.password, key.hash)
+													
+												);
+											}}
+											className="border-b"
+										>
 											<td className="whitespace-nowrap px-6 py-4 w-24">
 												<img
 													src="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.png?v=c78bd457575a"

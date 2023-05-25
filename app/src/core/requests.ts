@@ -29,7 +29,7 @@ type Password = {
     id: string;
     name: string;
     username: string;
-    encrypted_password: string;
+    password: string;
     salt: string;
     url: string;
     note: string;

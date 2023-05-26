@@ -2,6 +2,9 @@ import React from "react"
 import { useState, useEffect } from "react"
 import { editPassword, encrypt, decrypt, bcrypt_hash } from "../core"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import generator from "generate-password-ts"
+import { writeText } from "@tauri-apps/api/clipboard"
+
 type Keys = {
     vault: { hash: string; salt: string }
     auth: { hash: string; salt: string }
@@ -171,6 +174,17 @@ const EditPasswordForm = ({
                                     )}
                                 </button>
                                 <button
+                                    onClick={async () => {
+                                        let genPswd = generator.generate({
+                                            strict: true,
+                                            length: 20,
+                                            excludeSimilarCharacters: true,
+                                            symbols: true,
+                                            numbers: true,
+                                        })
+                                        setPassword(genPswd)
+                                        await writeText(genPswd)
+                                    }}
                                     type="button"
                                     className="float-right mx-4 text-red-500"
                                 >

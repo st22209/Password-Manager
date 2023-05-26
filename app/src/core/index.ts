@@ -6,6 +6,7 @@ import {
     getPassword,
     postNewPassword,
     deletePassword,
+    editPassword
 } from "./requests"
 import { bcrypt_hash, getUserKeys, encrypt, decrypt } from "./kdf"
 
@@ -21,4 +22,5 @@ export {
     getPassword,
     postNewPassword,
     deletePassword,
+    editPassword
 }

@@ -45,7 +45,7 @@ type NewPassword = {
     salt: string
     url: string
     note: string
-    owner_id: string
+    owner_id?: string
 }
 
 type SinglePassword = {
@@ -155,6 +155,58 @@ async function postNewPassword(authKeyHash: string, passwordData: NewPassword) {
             }
         }
     }
+    return response_json
+}
+
+async function editPassword(authKeyHash: string, passwordID: string, passwordData: NewPassword) {
+    const API_URL = `${BASE_URL}/passwords?auth_key=${authKeyHash}&owner_id=${passwordData.owner_id}&password_id=${passwordID}`
+    delete passwordData.owner_id
+
+    let response_data = {
+        method: "PATCH",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(passwordData),
+    }
+    let response
+    try {
+        response = await fetch(API_URL, response_data)
+    } catch (err) {
+        return {
+            success: false,
+            type: "api",
+            error: {
+                title: "Failed to make request!",
+                body: "The API seems to be down! Please check its online and on the right port",
+            },
+        }
+    }
+
+    let response_json = await response.json()
+    if (response_json["detail"]["success"] === false) {
+        if (response.status === STATUS_CODES.NOT_FOUND) {
+            return {
+                success: false,
+                type: "notfound",
+                error: {
+                    title: "Username Not Found",
+                    body: "aint no account exist with this username. You sure you spelt it right?",
+                },
+            }
+        } else if (response.status === STATUS_CODES.UNAUTHORIZED) {
+            return {
+                success: false,
+                type: "wrongpass",
+                error: {
+                    title: "Wrong Password",
+                    body: "Your password is just wrong bro type it correctly",
+                },
+            }
+        }
+    }
+    console.log(response_json)
     return response_json
 }
 
@@ -339,4 +391,5 @@ export {
     getPassword,
     postNewPassword,
     deletePassword,
+    editPassword
 }

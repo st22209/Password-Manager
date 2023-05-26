@@ -428,7 +428,7 @@ const PasswordTable = ({
                                                                     true
                                                                 )
                                                             }}
-                                                            className="text-bold px-4 py-2.5 rounded bg-red-500 text-white"
+                                                            className="text-bold px-4 py-2.5 rounded bg-blue-500 text-white"
                                                         >
                                                             <FontAwesomeIcon
                                                                 icon={

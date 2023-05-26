@@ -11,6 +11,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { IconProp } from "@fortawesome/fontawesome-svg-core"
 import { useState } from "react"
+import { EditPasswordForm } from "../components"
 import { writeText } from "@tauri-apps/api/clipboard"
 
 type Password = {
@@ -54,6 +55,7 @@ const PasswordTable = ({
     const [showPassword, setShowPassword] = useState(false)
     const [passwordViewModal, setPasswordViewModal] =
         useState<passwordViewModalType>({ show: false })
+    const [showModal, setShowModal] = useState<boolean>(false)
 
     return (
         <div>
@@ -312,96 +314,131 @@ const PasswordTable = ({
                                 <tbody>
                                     {passwords.map((password) => {
                                         return (
-                                            <tr
-                                                key={password.id}
-                                                onClick={async () => {
-                                                    let key = await bcrypt_hash(
-                                                        data.keys.vault.hash,
-                                                        password.salt
-                                                    )
-                                                    console.log(
-                                                        password.password,
-                                                        password.salt,
-                                                        decrypt(
-                                                            password.password,
-                                                            key.hash
-                                                        )
-                                                    )
-                                                }}
-                                                className="border-b"
-                                            >
-                                                <td className="whitespace-nowrap px-6 py-4 w-24">
-                                                    <img
-                                                        src={`https://www.google.com/s2/favicons?domain=${password.url}&sz=256`}
-                                                        alt="Website icon"
-                                                    />
-                                                </td>
-                                                <td className="whitespace-nowrap px-6 py-4 font-medium">
-                                                    {password.name}
-                                                </td>
-                                                <td className="whitespace-nowrap px-6 py-4">
-                                                    {password.url}
-                                                </td>
-                                                <td className="whitespace-nowrap px-6 py-4">
-                                                    {new Date(
-                                                        password.last_edited
-                                                    ).toLocaleString("en-NZ")}
-                                                </td>
-                                                <td className="whitespace-nowrap px-6 py-4">
-                                                    {new Date(
-                                                        password.date_added
-                                                    ).toLocaleString("en-NZ")}
-                                                </td>
-                                                <td className="whitespace-nowrap flex gap-2 px-6 py-4">
-                                                    <button
-                                                        onClick={async () => {
-                                                            let key =
-                                                                await bcrypt_hash(
-                                                                    data.keys
-                                                                        .vault
-                                                                        .hash,
-                                                                    password.salt
-                                                                )
+                                            <div>
+                                                <EditPasswordForm
+                                                    show={showModal}
+                                                    setStateFunction={
+                                                        setShowModal
+                                                    }
+                                                    keys={data.keys}
+                                                    owner_id={data.user.id}
+                                                    passwordData={password}
+                                                />
 
-                                                            setPasswordViewModal(
-                                                                {
-                                                                    show: true,
-                                                                    data: password,
-                                                                    decrypted:
-                                                                        decrypt(
-                                                                            password.password,
-                                                                            key.hash
-                                                                        ),
+                                                <tr
+                                                    key={password.id}
+                                                    onClick={async () => {
+                                                        let key =
+                                                            await bcrypt_hash(
+                                                                data.keys.vault
+                                                                    .hash,
+                                                                password.salt
+                                                            )
+                                                        console.log(
+                                                            password.password,
+                                                            password.salt,
+                                                            decrypt(
+                                                                password.password,
+                                                                key.hash
+                                                            )
+                                                        )
+                                                    }}
+                                                    className="border-b"
+                                                >
+                                                    <td className="whitespace-nowrap px-6 py-4 w-24">
+                                                        <img
+                                                            src={`https://www.google.com/s2/favicons?domain=${password.url}&sz=256`}
+                                                            alt="Website icon"
+                                                        />
+                                                    </td>
+                                                    <td className="whitespace-nowrap px-6 py-4 font-medium">
+                                                        {password.name}
+                                                    </td>
+                                                    <td className="whitespace-nowrap px-6 py-4">
+                                                        {password.url}
+                                                    </td>
+                                                    <td className="whitespace-nowrap px-6 py-4">
+                                                        {new Date(
+                                                            password.last_edited
+                                                        ).toLocaleString(
+                                                            "en-NZ"
+                                                        )}
+                                                    </td>
+                                                    <td className="whitespace-nowrap px-6 py-4">
+                                                        {new Date(
+                                                            password.date_added
+                                                        ).toLocaleString(
+                                                            "en-NZ"
+                                                        )}
+                                                    </td>
+                                                    <td className="whitespace-nowrap flex gap-2 px-6 py-4">
+                                                        <button
+                                                            onClick={async () => {
+                                                                let key =
+                                                                    await bcrypt_hash(
+                                                                        data
+                                                                            .keys
+                                                                            .vault
+                                                                            .hash,
+                                                                        password.salt
+                                                                    )
+
+                                                                setPasswordViewModal(
+                                                                    {
+                                                                        show: true,
+                                                                        data: password,
+                                                                        decrypted:
+                                                                            decrypt(
+                                                                                password.password,
+                                                                                key.hash
+                                                                            ),
+                                                                    }
+                                                                )
+                                                            }}
+                                                            className="text-bold px-4 py-2.5 rounded bg-green-600 text-white"
+                                                        >
+                                                            <FontAwesomeIcon
+                                                                icon={
+                                                                    "fa-solid fa-eye" as IconProp
                                                                 }
-                                                            )
-                                                        }}
-                                                        className="text-bold px-4 py-2.5 rounded bg-green-600 text-white"
-                                                    >
-                                                        <FontAwesomeIcon
-                                                            icon={
-                                                                "fa-solid fa-eye" as IconProp
-                                                            }
-                                                        />
-                                                    </button>
-                                                    <button
-                                                        onClick={() => {
-                                                            deletePassword(
-                                                                data.user.id,
-                                                                password.id,
-                                                                data.keys.auth
-                                                                    .hash
-                                                            )
-                                                        }}
-                                                        className="text-bold px-4 py-2.5 rounded bg-red-500 text-white"
-                                                    >
-                                                        <FontAwesomeIcon
-                                                            icon={
-                                                                "fa-solid fa-trash" as IconProp
-                                                            }
-                                                        />
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                                            />
+                                                        </button>
+                                                        <button
+                                                            onClick={() => {
+                                                                deletePassword(
+                                                                    data.user
+                                                                        .id,
+                                                                    password.id,
+                                                                    data.keys
+                                                                        .auth
+                                                                        .hash
+                                                                )
+                                                            }}
+                                                            className="text-bold px-4 py-2.5 rounded bg-red-500 text-white"
+                                                        >
+                                                            <FontAwesomeIcon
+                                                                icon={
+                                                                    "fa-solid fa-trash" as IconProp
+                                                                }
+                                                            />
+                                                        </button>
+                                                        <button
+                                                            onClick={() => {
+                                                                setShowModal(
+                                                                    true
+                                                                )
+                                                            }}
+                                                            className="text-bold px-4 py-2.5 rounded bg-red-500 text-white"
+                                                        >
+                                                            <FontAwesomeIcon
+                                                                icon={
+                                                                    "fa-solid fa-edit" as IconProp
+                                                                }
+                                                            />
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </div>
                                         )
                                     })}
                                 </tbody>

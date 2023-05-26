@@ -314,7 +314,7 @@ const PasswordTable = ({
                                 <tbody>
                                     {passwords.map((password) => {
                                         return (
-                                            <div>
+                                            <>
                                                 <EditPasswordForm
                                                     show={showModal}
                                                     setStateFunction={
@@ -438,7 +438,7 @@ const PasswordTable = ({
                                                         </button>
                                                     </td>
                                                 </tr>
-                                            </div>
+                                            </>
                                         )
                                     })}
                                 </tbody>

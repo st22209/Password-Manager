@@ -1,5 +1,5 @@
 import React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { editPassword, encrypt, decrypt, bcrypt_hash } from "../core"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 type Keys = {
@@ -36,9 +36,12 @@ const EditPasswordForm = ({
     const [title, setTitle] = useState(passwordData.name)
     const [username, setUsername] = useState(passwordData.username)
     const [websiteURL, setWebsiteURL] = useState(passwordData.url)
-    bcrypt_hash(keys.vault.hash, passwordData.salt).then((key) => {
-        setPassword(decrypt(passwordData.password, key.hash))
-    })
+    useEffect(() => {
+        bcrypt_hash(keys.vault.hash, passwordData.salt).then((key) => {
+            setPassword(decrypt(passwordData.password, key.hash))
+        })
+    }, [])
+
     const [password, setPassword] = useState(passwordData.password)
     const [note, setNote] = useState(passwordData.note)
     const [showPassword, setShowPassword] = useState(false)
@@ -54,16 +57,6 @@ const EditPasswordForm = ({
     }
     const stopTypingURL = () => {
         clearTimeout(fetchURLTimeout)
-    }
-
-    function resetInputFields() {
-        setTitle("")
-        setUsername("")
-        setWebsiteURL("")
-        setPassword("")
-        setNote("")
-        setWebsiteIconURL("")
-        setShowPassword(false)
     }
 
     return (
@@ -97,7 +90,6 @@ const EditPasswordForm = ({
                                     owner_id,
                                 }
                             )
-                            resetInputFields()
                             setStateFunction(false)
                         }}
                     >
@@ -207,11 +199,10 @@ const EditPasswordForm = ({
                                 type="submit"
                                 className="px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#1F81B9] rounded-md"
                             >
-                                Add Password
+                                Edit Password
                             </button>
                             <button
                                 onClick={() => {
-                                    resetInputFields()
                                     setStateFunction(false)
                                 }}
                                 type="button"

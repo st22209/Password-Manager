@@ -206,7 +206,6 @@ async function editPassword(authKeyHash: string, passwordID: string, passwordDat
             }
         }
     }
-    console.log(response_json)
     return response_json
 }
 

@@ -22,12 +22,12 @@ app = PasswordManager(__version__)
 
 
 @app.get("/ping")
-def ping(request: Request):
+def ping(request: Request) -> dict:
     return {"success": True, "detail": "pong"}
 
 
 @app.on_event("startup")
-async def startup_event():
+async def startup_event() -> None:
     """
     Runs on API startup and prints a message to console
     """
@@ -36,7 +36,7 @@ async def startup_event():
 
 
 @app.on_event("shutdown")
-async def shutdown_event():
+async def shutdown_event() -> None:
     """
     Runs on API shutdown and prints a message to console
     """
@@ -68,16 +68,18 @@ devmode = os.environ.get("DEVMODE", "").lower()
 if devmode not in ["true", "false"]:
     raise InvalidDevmodeValue(provided=devmode)
 
-if devmode == "true":
-    options = {"app": "main:app", "port": PORT, "reload": True}
-else:
-    options = {
+# set the uvicorn server options based one dev mode or not
+options = (
+    {"app": "main:app", "port": PORT, "reload": True}
+    if devmode == "true"
+    else {
         "app": "main:app",
         "reload": False,
         "port": PORT,
         "access_log": False,
         "log_level": "critical",
     }
+)
 
 
 if __name__ == "__main__":

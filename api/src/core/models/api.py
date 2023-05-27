@@ -31,8 +31,7 @@ def get_description() -> str:
 
     path = join(dirname(__file__), "../../../", "assets/markdown/description.md")
     with open(path) as f:
-        description = f.read()
-    return description
+        return f.read()
 
 
 class PasswordManager(FastAPI):

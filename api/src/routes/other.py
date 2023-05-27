@@ -9,5 +9,8 @@ other_router = APIRouter(
 
 
 @other_router.get("/")
-async def redirect_to_docs():
+async def redirect_to_docs() -> RedirectResponse:
+    """
+    This simply just redirects anyone going to the base url to the swagger api docs
+    """
     return RedirectResponse("/docs")

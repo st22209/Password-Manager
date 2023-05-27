@@ -60,10 +60,19 @@ class AuthModification(BaseModel):
     auth_key: str
 
     async def hashpass(self):
+        """
+        Hashes the user's authentication key, because we aint storing the real shit in our database
+        """
+
         self.auth_key = await argon2_hash(self.auth_key)
 
 
 async def verify_auth_key(owner_id: str, auth_key: str) -> None:
+    """
+    Takes an auth key and a user id and checks that they match and that
+    the authentcation key is valid, if not it raises http exceptions
+    """
+
     if (user := await User.filter(id=owner_id).first()) is None:
         raise APIHTTPExceptions.USER_NOT_FOUND(owner_id)
 

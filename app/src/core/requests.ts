@@ -1,60 +1,17 @@
+import {
+    APIError,
+    NewPassword,
+    PasswordArray,
+    SinglePassword,
+    User,
+} from "./types"
+
 const BASE_URL = "http://127.0.0.1:8443/api"
 const STATUS_CODES = {
     INVALID: 422,
     CONFLICT: 409,
     NOT_FOUND: 404,
     UNAUTHORIZED: 401,
-}
-
-type User = {
-    success: true
-    detail: string
-    user: {
-        id: string
-        username: string
-        auth_key_hash: string
-    }
-}
-
-type APIError = {
-    success: false
-    type: string
-    error: {
-        title: string
-        body: string
-    }
-}
-
-type Password = {
-    id: string
-    name: string
-    username: string
-    password: string
-    salt: string
-    url: string
-    note: string
-    date_added: string
-    last_edited: string
-    owner_id: string
-}
-
-type NewPassword = {
-    name: string
-    username: string
-    password: string
-    salt: string
-    url: string
-    note: string
-    owner_id?: string
-}
-
-type SinglePassword = {
-    success: true
-    password: Password
-}
-type PasswordArray = {
-    success: true
-    passwords: Password[]
 }
 
 async function postNewUser(username: string, authKeyHash: string) {
@@ -158,7 +115,11 @@ async function postNewPassword(authKeyHash: string, passwordData: NewPassword) {
     return response_json
 }
 
-async function editPassword(authKeyHash: string, passwordID: string, passwordData: NewPassword) {
+async function editPassword(
+    authKeyHash: string,
+    passwordID: string,
+    passwordData: NewPassword
+) {
     const API_URL = `${BASE_URL}/passwords?auth_key=${authKeyHash}&owner_id=${passwordData.owner_id}&password_id=${passwordID}`
     delete passwordData.owner_id
 
@@ -390,5 +351,5 @@ export {
     getPassword,
     postNewPassword,
     deletePassword,
-    editPassword
+    editPassword,
 }

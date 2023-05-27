@@ -3,13 +3,9 @@ import { Navbar } from "../components"
 import { Link } from "react-router-dom"
 import { GeneratePassword, AllPasswords, BackupVault } from "./"
 import { useLocation } from "react-router-dom"
+import { Keys } from "../core/types"
 
 const Passwords = () => {
-    type Keys = {
-        vault: { hash: string; salt: string }
-        auth: { hash: string; salt: string }
-    }
-
     const location = useLocation()
     const data: {
         user: {

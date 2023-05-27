@@ -1,24 +1,6 @@
 import { bcrypt_hash, postNewUser } from "../core"
 import { Store } from "tauri-plugin-store-api"
-
-type User = {
-    success: true
-    detail: string
-    user: {
-        id: string
-        username: string
-        auth_key_hash: string
-    }
-}
-
-type NewUserError = {
-    success: false
-    type: string
-    error: {
-        title: string
-        body: string
-    }
-}
+import { User, NewUserError } from "./types"
 
 async function signupSubmitCallback(
     username: string,

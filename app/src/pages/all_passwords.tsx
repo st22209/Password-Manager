@@ -1,34 +1,7 @@
 import { PasswordForm, PasswordTable } from "../components"
-import React from "react"
 import { useEffect, useState } from "react"
-import { decrypt, bcrypt_hash, getPassword, encrypt } from "../core"
-
-type Keys = {
-    vault: { hash: string; salt: string }
-    auth: { hash: string; salt: string }
-}
-
-type Password = {
-    id: string
-    name: string
-    username: string
-    password: string
-    salt: string
-    url: string
-    note: string
-    date_added: string
-    last_edited: string
-    owner_id: string
-}
-
-type SinglePassword = {
-    success: boolean
-    password: Password
-}
-type PasswordArray = {
-    success: boolean
-    passwords: Password[]
-}
+import { getPassword } from "../core"
+import { Keys, Password } from "../core/types"
 
 const AllPasswords = ({
     user,

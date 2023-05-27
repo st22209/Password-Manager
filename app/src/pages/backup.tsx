@@ -5,6 +5,7 @@ import { createBackup, decryptBackupData } from "../core"
 import { readTextFile } from "@tauri-apps/api/fs"
 import { encrypt, bcrypt_hash } from "../core"
 import { postNewPassword } from "../core"
+import { Keys } from "../core/types"
 
 async function saveFileContents(data: string) {
     try {
@@ -20,10 +21,7 @@ async function saveFileContents(data: string) {
         console.error(err)
     }
 }
-type Keys = {
-    vault: { hash: string; salt: string }
-    auth: { hash: string; salt: string }
-}
+
 const BackupVault = ({
     user,
     keys,

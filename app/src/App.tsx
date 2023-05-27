@@ -15,14 +15,17 @@ import {
 
 export const AnimatedRoutes = () => {
     useEffect(() => {
-        (async () => {
+        ;(async () => {
             let permissionGranted = await isPermissionGranted()
             if (!permissionGranted) {
                 const permission = await requestPermission()
                 permissionGranted = permission === "granted"
             }
             if (permissionGranted) {
-                sendNotification({ title: "Password1", body: "Welcome to Password1" })
+                sendNotification({
+                    title: "Password1",
+                    body: "Welcome to Password1",
+                })
             }
         })()
     })

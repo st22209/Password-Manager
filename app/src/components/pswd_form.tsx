@@ -4,11 +4,7 @@ import { postNewPassword, encrypt, bcrypt_hash } from "../core"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import generator from "generate-password-ts"
 import { writeText } from "@tauri-apps/api/clipboard"
-
-type Keys = {
-    vault: { hash: string; salt: string }
-    auth: { hash: string; salt: string }
-}
+import { Keys } from "../core/types"
 
 const PasswordForm = ({
     show,

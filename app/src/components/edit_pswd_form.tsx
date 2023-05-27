@@ -4,24 +4,7 @@ import { editPassword, encrypt, decrypt, bcrypt_hash } from "../core"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import generator from "generate-password-ts"
 import { writeText } from "@tauri-apps/api/clipboard"
-
-type Keys = {
-    vault: { hash: string; salt: string }
-    auth: { hash: string; salt: string }
-}
-
-type Password = {
-    id: string
-    name: string
-    username: string
-    password: string
-    salt: string
-    url: string
-    note: string
-    date_added: string
-    last_edited: string
-    owner_id: string
-}
+import { Password, Keys } from "../core/types"
 
 const EditPasswordForm = ({
     show,

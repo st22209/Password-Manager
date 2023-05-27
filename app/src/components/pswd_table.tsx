@@ -1,36 +1,10 @@
-import React from "react"
-import { useEffect } from "react"
-import {
-    decrypt,
-    bcrypt_hash,
-    getPassword,
-    encrypt,
-    postNewPassword,
-    deletePassword,
-} from "../core"
+import { decrypt, bcrypt_hash, deletePassword } from "../core"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { IconProp } from "@fortawesome/fontawesome-svg-core"
 import { useState } from "react"
 import { EditPasswordForm } from "../components"
 import { writeText } from "@tauri-apps/api/clipboard"
-
-type Password = {
-    id: string
-    name: string
-    username: string
-    password: string
-    salt: string
-    url: string
-    note: string
-    date_added: string
-    last_edited: string
-    owner_id: string
-}
-
-type Keys = {
-    vault: { hash: string; salt: string }
-    auth: { hash: string; salt: string }
-}
+import { Password, Keys } from "../core/types"
 
 type passwordViewModalType = {
     show: boolean

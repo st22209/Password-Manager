@@ -1,14 +1,5 @@
 import { passwordStrength } from "check-password-strength"
-
-type ValidationError =
-    | {
-          success: false
-          error: {
-              title: string
-              body: string
-          }
-      }
-    | { success: true; error: null }
+import { ValidationError } from "./types"
 
 function runValidation(username: string, password: string): ValidationError {
     if (!isNaN(parseInt(username[0]))) {

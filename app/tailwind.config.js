@@ -7,6 +7,11 @@ export default {
                 "user-background": "url('src/assets/user_background.svg')",
             },
         },
+        fontFamily: {
+            "bebas": "Bebas Neue",
+            "poppins": "Poppins",
+            "roboto": "Roboto"
+        }
     },
     plugins: [],
 }

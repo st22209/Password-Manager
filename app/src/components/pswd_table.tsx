@@ -327,22 +327,6 @@ const PasswordTable = ({
 
                                                 <tr
                                                     key={password.id}
-                                                    onClick={async () => {
-                                                        let key =
-                                                            await bcrypt_hash(
-                                                                data.keys.vault
-                                                                    .hash,
-                                                                password.salt
-                                                            )
-                                                        console.log(
-                                                            password.password,
-                                                            password.salt,
-                                                            decrypt(
-                                                                password.password,
-                                                                key.hash
-                                                            )
-                                                        )
-                                                    }}
                                                     className="border-b"
                                                 >
                                                     <td className="whitespace-nowrap px-6 py-4 w-24">

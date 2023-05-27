@@ -9,6 +9,7 @@ import {
     editPassword
 } from "./requests"
 import { bcrypt_hash, getUserKeys, encrypt, decrypt } from "./kdf"
+import { createBackup, decryptBackupData } from "./backup"
 
 export {
     bcrypt_hash,
@@ -22,5 +23,7 @@ export {
     getPassword,
     postNewPassword,
     deletePassword,
-    editPassword
+    editPassword,
+    createBackup,
+    decryptBackupData
 }

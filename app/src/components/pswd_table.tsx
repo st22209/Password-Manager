@@ -301,7 +301,7 @@ const PasswordTable = ({
 
                                                 <tr
                                                     key={password.id}
-                                                    className="border-b"
+                                                    className="border-b  font-poppins"
                                                 >
                                                     <td className="whitespace-nowrap px-6 py-4 w-24">
                                                         <img

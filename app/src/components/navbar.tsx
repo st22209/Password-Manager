@@ -15,8 +15,8 @@ const Navbar = ({
         <div className="h-full w-[25vw]">
             <div>
                 <div className="p-5 w-full text-center h-full mt-10">
-                    <div className="p-2.5 mt-1 flex items-center">
-                        <h1 className="text-[3rem] ml-3 text-gray-200 font-bold">
+                    <div className="p-2.5 mt-1 flex flex-col items-center w-full text-center">
+                        <h1 className="text-[4.5rem] text-gray-200 font-bebas text-center">
                             Password1
                         </h1>
                     </div>
@@ -34,7 +34,7 @@ const Navbar = ({
                                 className="opacity-75"
                                 icon={"fa-solid fa-list" as IconProp}
                             />
-                            <span className="ml-4 opacity-75">
+                            <span className="ml-4 opacity-75 font-poppins">
                                 All Passwords
                             </span>
                         </button>
@@ -52,7 +52,7 @@ const Navbar = ({
                                 // @ts-ignore
                                 icon={["fa-solid", "fa-lock"]}
                             />
-                            <span className="ml-4 opacity-75">
+                            <span className="ml-4 opacity-75 font-poppins">
                                 Password Generator
                             </span>
                         </button>
@@ -70,7 +70,7 @@ const Navbar = ({
                                 // @ts-ignore
                                 icon={["fa-solid", "fa-floppy-disk"]}
                             />
-                            <span className="ml-4 opacity-75">
+                            <span className="ml-4 opacity-75 font-poppins">
                                 Backup Vault
                             </span>
                         </button>
@@ -84,7 +84,9 @@ const Navbar = ({
                                 // @ts-ignore
                                 icon={["fa-solid", "fa-home"]}
                             />
-                            <span className="ml-4 opacity-75">Logout/Home</span>
+                            <span className="ml-4 opacity-75 font-poppins">
+                                Logout/Home
+                            </span>
                         </button>
                     </div>
                 </div>

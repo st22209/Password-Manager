@@ -42,7 +42,7 @@ const Signup = () => {
             </Link>
 
             <div className="flex flex-col h-screen justify-center items-center relative z-10">
-                <h1 className="text-bold text-white text-[5rem]">Signup</h1>
+                <h1 className="text-bold text-white text-[5rem] font-poppins">Signup</h1>
                 <div>
                     <form
                         onSubmit={async (

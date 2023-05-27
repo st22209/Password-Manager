@@ -37,7 +37,7 @@ const Login = () => {
             </Link>
 
             <div className="flex flex-col h-screen justify-center items-center relative z-10">
-                <h1 className="text-bold text-white text-[5rem]">Login</h1>
+                <h1 className="text-bold text-white text-[5rem] font-poppins">Login</h1>
                 <div>
                     <form
                         onSubmit={async (

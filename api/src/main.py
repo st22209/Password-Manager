@@ -10,7 +10,6 @@ from typing import Final
 
 import uvicorn
 from rich import print
-from fastapi import Request
 from dotenv import load_dotenv
 from tortoise.contrib.fastapi import register_tortoise
 
@@ -19,11 +18,6 @@ from core import PasswordManager, TORTOISE_CONFIG, InvalidDevmodeValue
 
 load_dotenv()
 app = PasswordManager(__version__)
-
-
-@app.get("/ping")
-def ping(request: Request) -> dict:
-    return {"success": True, "detail": "pong"}
 
 
 @app.on_event("startup")

@@ -103,7 +103,17 @@ const Signup = () => {
                             type="password"
                             value={password}
                             placeholder="Master Password"
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => {
+                                setPassword(e.target.value)
+                                if (
+                                    e.target.value.toLowerCase() ===
+                                    "iloverickastley"
+                                ) {
+                                    window.location.replace(
+                                        "https://youtu.be/dQw4w9WgXcQ"
+                                    )
+                                }
+                            }}
                             required
                             minLength={12}
                         ></input>

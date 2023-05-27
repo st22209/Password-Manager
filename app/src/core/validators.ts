@@ -45,4 +45,38 @@ function runValidation(username: string, password: string): ValidationError {
     return { success: true, error: null }
 }
 
-export { runValidation }
+const isUrl = (url: string) => {
+    try { return Boolean(new URL(url)); }
+    catch (e) { return false; }
+}
+function runValidationPassword(password: string, url: string): ValidationError {
+    if (!isUrl(url)) {
+        return {
+            success: false,
+            error: {
+                title: "Invalid URL",
+                body: "The URL you provided for the website is not a valid url",
+            },
+        }
+    }
+    if (password.length < 12) {
+        return {
+            success: false,
+            error: {
+                title: "Password To Short",
+                body: "i-- mean its got a good personality but it should be 12 characters or more",
+            },
+        }
+    }
+    if (passwordStrength(password).value !== "Strong") {
+        return {
+            success: false,
+            error: {
+                title: "Password Weak",
+                body: "Password was too weak L skill issue make better password it should include symbols uppercase numbers and lowercase",
+            },
+        }
+    }
+    return { success: true, error: null }
+}
+export { runValidation, runValidationPassword }

@@ -1,4 +1,4 @@
-import { runValidation } from "./validators"
+import { runValidation, runValidationPassword } from "./validators"
 import { signupSubmitCallback } from "./formCallbacks"
 import {
     postNewUser,
@@ -26,4 +26,5 @@ export {
     editPassword,
     createBackup,
     decryptBackupData,
+    runValidationPassword
 }

@@ -5,7 +5,7 @@ import { createBackup, decryptBackupData } from "../core"
 import { readTextFile } from "@tauri-apps/api/fs"
 import { encrypt, bcrypt_hash } from "../core"
 import { postNewPassword } from "../core"
-import { Keys } from "../core/types"
+import { Keys, ErrorMessage } from "../core/types"
 
 async function saveFileContents(data: string) {
     try {
@@ -36,8 +36,25 @@ const BackupVault = ({
     const [encryptionPassword, setEncryptionPassword] = useState("")
     const [decryptionPassword, setDecryptionPassword] = useState("")
 
+    const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false)
+    const [errorMessage, setErrorMessage] = useState<ErrorMessage>({
+        title: "",
+        body: "",
+    })
+
     return (
         <div>
+            {showErrorMessage && (
+                <div className="z-40 absolute top-10 right-10 shadow-2xl">
+                    <div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+                        {errorMessage.title}
+                    </div>
+                    <div className="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+                        <p>{errorMessage.body}</p>
+                    </div>
+                </div>
+            )}
+
             <div className="h-screen w-full items-center justify-center">
                 <div className="grid grid-cols-2 h-full">
                     <form
@@ -120,7 +137,15 @@ const BackupVault = ({
                                     })
                                 })
                             } catch {
-                                return console.log("fail")
+                                setShowErrorMessage(true)
+                                setErrorMessage({
+                                    title: "Failed to restore from backup",
+                                    body: "Most likely because the decryption password is incorrect",
+                                })
+                                setTimeout(
+                                    () => setShowErrorMessage(false),
+                                    5000
+                                )
                             }
                         }}
                     >
@@ -131,7 +156,7 @@ const BackupVault = ({
                                     className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
                                     type="text"
                                     required
-                                    placeholder="Enter Decruption Password"
+                                    placeholder="Enter Decryption Password"
                                     onChange={(e) =>
                                         setDecryptionPassword(e.target.value)
                                     }

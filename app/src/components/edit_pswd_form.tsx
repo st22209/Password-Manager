@@ -1,10 +1,16 @@
 import React from "react"
 import { useState, useEffect } from "react"
-import { editPassword, encrypt, decrypt, bcrypt_hash } from "../core"
+import {
+    editPassword,
+    encrypt,
+    decrypt,
+    bcrypt_hash,
+    runValidationPassword,
+} from "../core"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import generator from "generate-password-ts"
 import { writeText } from "@tauri-apps/api/clipboard"
-import { Password, Keys } from "../core/types"
+import { Password, Keys, ErrorMessage } from "../core/types"
 
 const EditPasswordForm = ({
     show,
@@ -22,6 +28,7 @@ const EditPasswordForm = ({
     const [title, setTitle] = useState(passwordData.name)
     const [username, setUsername] = useState(passwordData.username)
     const [websiteURL, setWebsiteURL] = useState(passwordData.url)
+
     useEffect(() => {
         bcrypt_hash(keys.vault.hash, passwordData.salt).then((key) => {
             setPassword(decrypt(passwordData.password, key.hash))
@@ -45,8 +52,24 @@ const EditPasswordForm = ({
         clearTimeout(fetchURLTimeout)
     }
 
+    const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false)
+    const [errorMessage, setErrorMessage] = useState<ErrorMessage>({
+        title: "",
+        body: "",
+    })
+
     return (
         <>
+            {showErrorMessage && (
+                <div className="z-[100] absolute top-10 right-10 shadow-2xl">
+                    <div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+                        {errorMessage.title}
+                    </div>
+                    <div className="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+                        <p>{errorMessage.body}</p>
+                    </div>
+                </div>
+            )}
             {show && (
                 <div className="z-40 w-[75vw] h-[90vh] bg-white shadow-2xl rounded-2xl p-3 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 overflow-y-auto">
                     <div className="w-full items-center justify-center flex mt-5">
@@ -60,10 +83,28 @@ const EditPasswordForm = ({
                         className="m-5"
                         onSubmit={async (e) => {
                             e.preventDefault()
+
+                            let validation = runValidationPassword(
+                                password,
+                                websiteURL
+                            )
+                            if (!validation.success) {
+                                setShowErrorMessage(true)
+                                setErrorMessage({
+                                    title: validation.error.title,
+                                    body: validation.error.body,
+                                })
+                                setTimeout(
+                                    () => setShowErrorMessage(false),
+                                    5000
+                                )
+                                return
+                            }
+
                             let key = await bcrypt_hash(keys.vault.hash)
                             let encrypted_password = encrypt(password, key.hash)
 
-                            await editPassword(
+                            let res = await editPassword(
                                 keys.auth.hash,
                                 passwordData.id,
                                 {
@@ -76,6 +117,19 @@ const EditPasswordForm = ({
                                     owner_id,
                                 }
                             )
+                            if (!res.success) {
+                                setShowErrorMessage(true)
+                                setErrorMessage({
+                                    title: res.error.title,
+                                    body: res.error.body,
+                                })
+                                setTimeout(
+                                    () => setShowErrorMessage(false),
+                                    5000
+                                )
+                                return
+                            }
+                            setShowErrorMessage(false)
                             setStateFunction(false)
                         }}
                     >

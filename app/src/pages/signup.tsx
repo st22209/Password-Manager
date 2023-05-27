@@ -3,11 +3,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { runValidation, getUserKeys, signupSubmitCallback } from "../core"
-
-type ErrorMessage = {
-    title: string
-    body: string
-}
+import { ErrorMessage } from "../core/types"
 
 const Signup = () => {
     const navigate = useNavigate()
@@ -58,6 +54,10 @@ const Signup = () => {
                             let valid = runValidation(username, password)
                             if (!valid.success) {
                                 setShowErrorMessage(true)
+                                setTimeout(
+                                    () => setShowErrorMessage(false),
+                                    5000
+                                )
                                 return setErrorMessage({
                                     title: valid.error.title,
                                     body: valid.error.body,
@@ -87,6 +87,10 @@ const Signup = () => {
                                 title: data.error.title,
                                 body: data.error.body,
                             })
+                            setTimeout(
+                                () => setShowErrorMessage(false),
+                                5000
+                            )
                         }}
                     >
                         <input

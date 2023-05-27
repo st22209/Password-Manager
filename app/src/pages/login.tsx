@@ -3,11 +3,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import { getUserKeys, authGetUser } from "../core"
 import { useNavigate } from "react-router-dom"
-
-type ErrorMessage = {
-    title: string
-    body: string
-}
+import { ErrorMessage } from "../core/types"
 
 const Login = () => {
     const navigate = useNavigate()
@@ -67,6 +63,10 @@ const Login = () => {
                                 title: userValid.error.title,
                                 body: userValid.error.body,
                             })
+                            setTimeout(
+                                () => setShowErrorMessage(false),
+                                5000
+                            )
                         }}
                     >
                         <input

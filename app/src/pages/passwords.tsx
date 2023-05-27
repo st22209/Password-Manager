@@ -34,7 +34,7 @@ const Passwords = () => {
     const pages = {
         all: <AllPasswords user={data.user} keys={data.keys} />,
         generate: <GeneratePassword />,
-        backup: <BackupVault />,
+        backup: <BackupVault user={data.user} keys={data.keys} />,
     }
     const [currentPage, setCurrentPage] = useState<
         "all" | "generate" | "backup"

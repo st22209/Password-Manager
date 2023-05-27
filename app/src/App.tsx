@@ -1,4 +1,5 @@
 import * as pages from "./pages"
+import { useEffect } from "react"
 import { Store } from "tauri-plugin-store-api"
 import { AnimatePresence, motion } from "framer-motion"
 import { fas } from "@fortawesome/free-solid-svg-icons"
@@ -6,8 +7,25 @@ import { fab } from "@fortawesome/free-brands-svg-icons"
 import { far } from "@fortawesome/free-regular-svg-icons"
 import { library } from "@fortawesome/fontawesome-svg-core"
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"
+import {
+    isPermissionGranted,
+    requestPermission,
+    sendNotification,
+} from "@tauri-apps/api/notification"
 
 export const AnimatedRoutes = () => {
+    useEffect(() => {
+        (async () => {
+            let permissionGranted = await isPermissionGranted()
+            if (!permissionGranted) {
+                const permission = await requestPermission()
+                permissionGranted = permission === "granted"
+            }
+            if (permissionGranted) {
+                sendNotification({ title: "Password1", body: "Welcome to Password1" })
+            }
+        })()
+    })
     const location = useLocation()
 
     window.onkeydown = function (e) {

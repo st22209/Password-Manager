@@ -172,6 +172,7 @@ const PasswordForm = ({
                             <div className="mb-4">
                                 <label className="block text-sm font-semibold text-gray-800">
                                     Title
+                                    <span className="ml-1 text-red-600">*</span>
                                 </label>
                                 <input
                                     maxLength={32}
@@ -185,6 +186,7 @@ const PasswordForm = ({
                             <div className="mb-4">
                                 <label className="block text-sm font-semibold text-gray-800">
                                     Email/Username
+                                    <span className="ml-1 text-red-600">*</span>
                                 </label>
                                 <input
                                     maxLength={64}
@@ -200,6 +202,7 @@ const PasswordForm = ({
                             <div className="mb-4">
                                 <label className="block text-sm font-semibold text-gray-800">
                                     Website URL
+                                    <span className="ml-1 text-red-600">*</span>
                                 </label>
                                 <input
                                     onChange={async (e) =>
@@ -217,6 +220,7 @@ const PasswordForm = ({
                             <div className="mb-4">
                                 <label className="block text-sm font-semibold text-gray-800">
                                     Password
+                                    <span className="ml-1 text-red-600">*</span>
                                 </label>
                                 <div className="flex">
                                     <input

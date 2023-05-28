@@ -15,7 +15,7 @@ import {
 
 export const AnimatedRoutes = () => {
     useEffect(() => {
-        ;(async () => {
+        (async () => {
             let permissionGranted = await isPermissionGranted()
             if (!permissionGranted) {
                 const permission = await requestPermission()

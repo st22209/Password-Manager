@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import { GeneratePassword, AllPasswords, BackupVault } from "./"
 import { useLocation } from "react-router-dom"
 import { Keys } from "../core/types"
+import { motion } from "framer-motion"
 
 const Passwords = () => {
     const location = useLocation()
@@ -40,12 +41,43 @@ const Passwords = () => {
         <div>
             <div
                 style={{ gridTemplateColumns: "25vw 75vw" }}
-                className="grid grid-cols-2 w-screen h-screen"
+                className="grid grid-cols-2 w-screen h-screen overflow-x-hidden overflow-y-auto"
             >
-                <Navbar page={currentPage} setPage={setCurrentPage} />
-                <div className="bg-white overflow-y-auto">
+                <motion.div
+                    animate={{
+                        opacity: 1,
+                        x: 0,
+                        transition: {
+                            ease: "easeInOut",
+                            delay: 0.2,
+                            duration: 0.75,
+                        },
+                    }}
+                    initial={{
+                        opacity: 0,
+                        x: -100,
+                    }}
+                >
+                    <Navbar page={currentPage} setPage={setCurrentPage} />
+                </motion.div>
+                <motion.div
+                    animate={{
+                        opacity: 1,
+                        x: 0,
+                        transition: {
+                            ease: "easeInOut",
+                            delay: 0.2,
+                            duration: 0.75,
+                        },
+                    }}
+                    initial={{
+                        opacity: 0,
+                        x: 100,
+                    }}
+                    className="bg-white"
+                >
                     {pages[currentPage]}
-                </div>
+                </motion.div>
             </div>
         </div>
     )

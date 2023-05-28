@@ -27,9 +27,7 @@
             },
             "fs": {
                 "all": true,
-                "scope": [
-                    "**"
-                ]
+                "scope": ["**"]
             },
             "dialog": {
                 "all": true,

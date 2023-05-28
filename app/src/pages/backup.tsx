@@ -6,6 +6,7 @@ import { readTextFile } from "@tauri-apps/api/fs"
 import { encrypt, bcrypt_hash } from "../core"
 import { postNewPassword } from "../core"
 import { Keys, ErrorMessage } from "../core/types"
+import { motion } from "framer-motion"
 
 async function saveFileContents(data: string) {
     try {
@@ -43,7 +44,19 @@ const BackupVault = ({
     })
 
     return (
-        <div>
+        <motion.div
+            animate={{
+                opacity: 1,
+                transition: {
+                    ease: "easeInOut",
+                    delay: 0.2,
+                    duration: 0.75,
+                },
+            }}
+            initial={{
+                opacity: 0,
+            }}
+        >
             {showErrorMessage && (
                 <div className="z-40 absolute top-10 right-10 shadow-2xl">
                     <div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
@@ -172,7 +185,7 @@ const BackupVault = ({
                     </form>
                 </div>
             </div>
-        </div>
+        </motion.div>
     )
 }
 

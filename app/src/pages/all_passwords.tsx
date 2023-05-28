@@ -2,6 +2,7 @@ import { PasswordForm, PasswordTable } from "../components"
 import { useEffect, useState } from "react"
 import { getPassword } from "../core"
 import { Keys, Password } from "../core/types"
+import { motion } from "framer-motion"
 
 const AllPasswords = ({
     user,
@@ -30,7 +31,19 @@ const AllPasswords = ({
     }, [])
 
     return (
-        <div>
+        <motion.div
+            animate={{
+                opacity: 1,
+                transition: {
+                    ease: "easeInOut",
+                    delay: 0.2,
+                    duration: 0.75,
+                },
+            }}
+            initial={{
+                opacity: 0,
+            }}
+        >
             <PasswordForm
                 show={showModal}
                 setStateFunction={setShowModal}
@@ -57,7 +70,7 @@ const AllPasswords = ({
                     />
                 </div>
             </div>
-        </div>
+        </motion.div>
     )
 }
 

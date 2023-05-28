@@ -8,10 +8,10 @@ export default {
             },
         },
         fontFamily: {
-            "bebas": "Bebas Neue",
-            "poppins": "Poppins",
-            "roboto": "Roboto"
-        }
+            bebas: "Bebas Neue",
+            poppins: "Poppins",
+            roboto: "Roboto",
+        },
     },
     plugins: [],
 }

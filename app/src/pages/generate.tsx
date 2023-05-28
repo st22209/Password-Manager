@@ -1,8 +1,8 @@
-import React from "react"
 import { useState } from "react"
 import { generate } from "generate-password-ts"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { writeText } from "@tauri-apps/api/clipboard"
+import { motion } from "framer-motion"
 
 const GeneratePassword = () => {
     const [generatedPassword, setGeneratedPassword] = useState("")
@@ -24,7 +24,19 @@ const GeneratePassword = () => {
         strict: true,
     })
     return (
-        <div>
+        <motion.div
+            animate={{
+                opacity: 1,
+                transition: {
+                    ease: "easeInOut",
+                    delay: 0.2,
+                    duration: 0.75,
+                },
+            }}
+            initial={{
+                opacity: 0,
+            }}
+        >
             <div className="flex items-center justify-center mt-2">
                 Note: all passwords entered into this manager require boxes 1-4
                 + box 6 ticked
@@ -204,7 +216,7 @@ const GeneratePassword = () => {
                     </button>
                 </form>
             </div>
-        </div>
+        </motion.div>
     )
 }
 

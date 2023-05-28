@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { runValidation, getUserKeys, signupSubmitCallback } from "../core"
 import { ErrorMessage } from "../core/types"
+import { motion, AnimatePresence } from "framer-motion"
 
 const Signup = () => {
     const navigate = useNavigate()
@@ -26,23 +27,65 @@ const Signup = () => {
         <div>
             <div className="absolute w-full h-full bg-user-background bg-cover"></div>
 
-            {showErrorMessage && (
-                <div className="z-40 absolute top-10 right-10 shadow-2xl">
-                    <div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
-                        {errorMessage.title}
-                    </div>
-                    <div className="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
-                        <p>{errorMessage.body}</p>
-                    </div>
-                </div>
-            )}
+            <AnimatePresence>
+                {showErrorMessage && (
+                    <motion.div
+                        animate={{
+                            opacity: 1,
+                            x: 0,
+                            transition: {
+                                ease: "easeInOut",
+                                delay: 1,
+                            },
+                        }}
+                        initial={{
+                            opacity: 0,
+                            x: 100,
+                        }}
+                        exit={{ opacity: 0 }}
+                        className="z-40 absolute top-10 right-10 shadow-2xl"
+                    >
+                        <div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+                            {errorMessage.title}{" "}
+                            <button
+                                className="float-right"
+                                onClick={() => {
+                                    setShowErrorMessage(false)
+                                }}
+                            >
+                                X
+                            </button>
+                        </div>
+                        <div className="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+                            <p>{errorMessage.body}</p>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             <Link className="absolute z-20 top-5 left-5 text-white" to="/">
                 Back To Home
             </Link>
 
-            <div className="flex flex-col h-screen justify-center items-center relative z-10">
-                <h1 className="text-bold text-white text-[5rem] font-poppins">Signup</h1>
+            <motion.div
+                animate={{
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                        ease: "easeInOut",
+                        delay: 0.1,
+                        duration: 0.75,
+                    },
+                }}
+                initial={{
+                    opacity: 0,
+                    y: 100,
+                }}
+                className="flex flex-col h-screen justify-center items-center relative z-10"
+            >
+                <h1 className="text-bold text-white text-[5rem] font-poppins">
+                    Signup
+                </h1>
                 <div>
                     <form
                         onSubmit={async (
@@ -87,10 +130,6 @@ const Signup = () => {
                                 title: data.error.title,
                                 body: data.error.body,
                             })
-                            setTimeout(
-                                () => setShowErrorMessage(false),
-                                5000
-                            )
                         }}
                     >
                         <input
@@ -134,7 +173,7 @@ const Signup = () => {
                         </div>
                     </form>
                 </div>
-            </div>
+            </motion.div>
         </div>
     )
 }

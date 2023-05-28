@@ -46,8 +46,11 @@ function runValidation(username: string, password: string): ValidationError {
 }
 
 const isUrl = (url: string) => {
-    try { return Boolean(new URL(url)); }
-    catch (e) { return false; }
+    try {
+        return Boolean(new URL(url))
+    } catch (e) {
+        return false
+    }
 }
 function runValidationPassword(password: string, url: string): ValidationError {
     if (!isUrl(url)) {

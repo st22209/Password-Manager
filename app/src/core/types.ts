@@ -1,11 +1,11 @@
 export type ValidationError =
     | {
-        success: false
-        error: {
-            title: string
-            body: string
-        }
-    }
+          success: false
+          error: {
+              title: string
+              body: string
+          }
+      }
     | { success: true; error: null }
 
 export type ErrorMessage = {

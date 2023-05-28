@@ -26,5 +26,5 @@ export {
     editPassword,
     createBackup,
     decryptBackupData,
-    runValidationPassword
+    runValidationPassword,
 }

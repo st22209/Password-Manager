@@ -325,7 +325,7 @@ const PasswordTable = ({
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {passwords.map((password) => {
+                                    {passwords.map((password, index) => {
                                         return (
                                             <>
                                                 <EditPasswordForm
@@ -338,9 +338,24 @@ const PasswordTable = ({
                                                     passwordData={password}
                                                 />
 
-                                                <tr
+                                                <motion.tr
                                                     key={password.id}
                                                     className="border-b font-poppins"
+                                                    animate={{
+                                                        opacity: 1,
+                                                        y: 0,
+                                                        transition: {
+                                                            ease: "easeInOut",
+                                                            duration: 1,
+                                                            delay:
+                                                                0.5 +
+                                                                index * 0.2,
+                                                        },
+                                                    }}
+                                                    initial={{
+                                                        opacity: 0,
+                                                        y: 100,
+                                                    }}
                                                 >
                                                     <td className="whitespace-nowrap px-6 py-4 w-24">
                                                         <img
@@ -448,7 +463,7 @@ const PasswordTable = ({
                                                             />
                                                         </button>
                                                     </td>
-                                                </tr>
+                                                </motion.tr>
                                             </>
                                         )
                                     })}

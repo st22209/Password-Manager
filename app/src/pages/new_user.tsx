@@ -120,7 +120,7 @@ const NewUser = () => {
                                 }}
                                 className="px-8 py-3 text-lg font-semibold border rounded text-white hover:bg-[#505BAF] duration-150"
                             >
-                                <Link to="/login">Choose Profile</Link>
+                                <Link to="/login">Choose User</Link>
                             </motion.div>
                         </div>
                     </div>

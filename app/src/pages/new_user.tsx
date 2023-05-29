@@ -124,7 +124,20 @@ const NewUser = () => {
                             </motion.div>
                         </div>
                     </div>
-                    <img
+                    <motion.img
+                        animate={{
+                            opacity: 1,
+                            x: 0,
+                            transition: {
+                                duration: 0.7,
+                                ease: "easeInOut",
+                                delay: 1.25,
+                            },
+                        }}
+                        initial={{
+                            opacity: 0,
+                            x: 100,
+                        }}
                         src={HeroVault}
                         alt=""
                         className="h-72 sm:h-80 md:h-[25rem] lg:h-[18rem] xl:h-[24rem] 2xl:h-[25rem]"

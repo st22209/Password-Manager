@@ -14,18 +14,28 @@ import { Password, Keys, ErrorMessage } from "../core/types"
 import { motion, AnimatePresence } from "framer-motion"
 
 const EditPasswordForm = ({
-    show,
+    state,
     setStateFunction,
     keys,
     owner_id,
-    passwordData,
 }: {
-    show: boolean
-    setStateFunction: React.Dispatch<React.SetStateAction<boolean>>
+    state: {
+        show: boolean
+        data?: Password
+    }
+    setStateFunction: React.Dispatch<
+        React.SetStateAction<{
+            show: boolean
+            data?: Password
+        }>
+    >
     keys: Keys
     owner_id: string
-    passwordData: Password
 }) => {
+    const passwordData = state.data
+    if (passwordData === undefined) {
+        return <></>
+    }
     const [title, setTitle] = useState(passwordData.name)
     const [username, setUsername] = useState(passwordData.username)
     const [websiteURL, setWebsiteURL] = useState(passwordData.url)
@@ -98,7 +108,7 @@ const EditPasswordForm = ({
             </AnimatePresence>
 
             <AnimatePresence>
-                {show && (
+                {state.show && (
                     <motion.div
                         className="z-40 w-[75vw] h-[90vh] bg-white shadow-2xl rounded-2xl p-3 absolute left-[15%] top-[7%] overflow-y-auto"
                         animate={{
@@ -176,7 +186,10 @@ const EditPasswordForm = ({
                                     return
                                 }
                                 setShowErrorMessage(false)
-                                setStateFunction(false)
+                                setStateFunction({
+                                    show: false,
+                                    data: undefined,
+                                })
                             }}
                         >
                             <div className="mb-4">
@@ -308,7 +321,10 @@ const EditPasswordForm = ({
                                 </button>
                                 <button
                                     onClick={() => {
-                                        setStateFunction(false)
+                                        setStateFunction({
+                                            show: false,
+                                            data: undefined,
+                                        })
                                     }}
                                     type="button"
                                     className="px-12 py-2 tracking-wide  text-white transition-colors duration-200 transform bg-[#333333] rounded-md"

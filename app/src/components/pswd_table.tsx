@@ -30,7 +30,12 @@ const PasswordTable = ({
     const [showPassword, setShowPassword] = useState(false)
     const [passwordViewModal, setPasswordViewModal] =
         useState<passwordViewModalType>({ show: false })
-    const [showModal, setShowModal] = useState<boolean>(false)
+    const [showModal, setShowModal] = useState<{
+        show: boolean
+        data?: Password
+    }>({
+        show: false,
+    })
 
     return (
         <div>
@@ -329,13 +334,12 @@ const PasswordTable = ({
                                         return (
                                             <>
                                                 <EditPasswordForm
-                                                    show={showModal}
+                                                    state={showModal}
                                                     setStateFunction={
                                                         setShowModal
                                                     }
                                                     keys={data.keys}
                                                     owner_id={data.user.id}
-                                                    passwordData={password}
                                                 />
 
                                                 <motion.tr
@@ -450,9 +454,10 @@ const PasswordTable = ({
                                                         </button>
                                                         <button
                                                             onClick={() => {
-                                                                setShowModal(
-                                                                    true
-                                                                )
+                                                                setShowModal({
+                                                                    show: true,
+                                                                    data: password,
+                                                                })
                                                             }}
                                                             className="text-bold px-4 py-2.5 rounded bg-blue-500 text-white"
                                                         >

@@ -1,10 +1,12 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { generate } from "generate-password-ts"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { writeText } from "@tauri-apps/api/clipboard"
 import { motion } from "framer-motion"
 
 const GeneratePassword = () => {
+    useEffect(() => setGeneratedPassword(generate(passwordOptions)), [])
+
     const [generatedPassword, setGeneratedPassword] = useState("")
     const [passwordOptions, setPasswordOptions] = useState<{
         length: number
@@ -48,53 +50,64 @@ const GeneratePassword = () => {
                         e.preventDefault()
                         setGeneratedPassword(generate(passwordOptions))
                     }}
-                    className="bg-white rounded-lg shadow-xl w-[30rem] h-[40rem] flex flex-col items-center"
+                    className="bg-[#848fec] rounded-lg shadow-2xl p-10  flex flex-col items-center"
                 >
-                    <h1 className="font-bold text-[2.5rem] my-5 mt-10">
-                        Password Generator
-                    </h1>
                     <div>
-                        <div className="flex mb-10 ">
-                            <div className="overflow-y-scroll overflow-x-auto placeholder:opacity-50 resize-none px-4 h-25 py-2 mt-2 text-black bg-white border rounded-md focus:border-indigo-400 focus:ring-indigo-300 focus:outline-none focus:ring focus:ring-opacity-40 w-[20rem] ">
-                                {generatedPassword}
+                        <div className="flex mb-5">
+                            <div className="px-3 py-1 bg-[#202320]  rounded-md flex gap-2">
+                                <div className="overflow-y-scroll overflow-x-auto placeholder:opacity-50 resize-none p-2 h-14 mt-2 text-white focus:border-indigo-400 focus:ring-indigo-300 focus:outline-none focus:ring focus:ring-opacity-40 w-[20rem] ">
+                                    {generatedPassword}
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={async () =>
+                                        await writeText(generatedPassword)
+                                    }
+                                    className="float-right ml-4 text-white text-2xl"
+                                >
+                                    <FontAwesomeIcon
+                                        icon={"fa-solid fa-copy" as any}
+                                    />
+                                </button>
                             </div>
-                            <button
-                                type="button"
-                                onClick={async () =>
-                                    await writeText(generatedPassword)
-                                }
-                                className="float-right ml-4"
-                            >
-                                <FontAwesomeIcon
-                                    icon={"fa-solid fa-copy" as any}
-                                />
-                            </button>
                         </div>
 
                         <div className="flex flex-col items-center">
                             <div>
-                                <div className="flex items-center mb-4">
+                                <label className="m-2 text-md text-white font-bold">
+                                    Password Length: {passwordOptions.length}
+                                </label>
+                                <div className="flex items-center mb-2 gap-3 bg-[#202320] px-10 py-5 rounded-lg">
+                                    <p className="text-white font-bold text-lg font-poppins">
+                                        12
+                                    </p>
                                     <input
-                                        id="default-checkbox"
-                                        type="checkbox"
-                                        checked={passwordOptions.lowercase}
-                                        value=""
                                         onChange={(e) => {
                                             let clone =
                                                 structuredClone(passwordOptions)
-                                            clone.lowercase = !clone.lowercase
+                                            clone.length = parseInt(
+                                                e.target.value
+                                            )
                                             setPasswordOptions(clone)
+                                            setGeneratedPassword(
+                                                generate(passwordOptions)
+                                            )
                                         }}
-                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                                        type="range"
+                                        min="12"
+                                        value={passwordOptions.length}
+                                        max="32"
+                                        className="w-52 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer "
                                     />
-                                    <label className="ml-2 text-sm font-medium text-black">
-                                        Allow Lowercase Characters
-                                    </label>
+                                    <p className="text-white font-bold text-lg font-poppins">
+                                        32
+                                    </p>
                                 </div>
-                                <div className="flex items-center mb-4">
+                                <label className="mx-2 text-md text-white font-bold">
+                                    Settings
+                                </label>
+                                <div className="flex items-center mb-2 gap-3 bg-[#202320] px-8 py-3 rounded-xl ">
                                     <input
-                                        id="default-checkbox"
-                                        type="checkbox"
                                         checked={passwordOptions.uppercase}
                                         value=""
                                         onChange={(e) => {
@@ -102,17 +115,39 @@ const GeneratePassword = () => {
                                                 structuredClone(passwordOptions)
                                             clone.uppercase = !clone.uppercase
                                             setPasswordOptions(clone)
+                                            setGeneratedPassword(
+                                                generate(passwordOptions)
+                                            )
                                         }}
-                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                                    />
-                                    <label className="ml-2 text-sm font-medium text-black">
-                                        Allow Uppercase Characters
-                                    </label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input
-                                        id="default-checkbox"
                                         type="checkbox"
+                                        className="scale-150 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                                    />
+                                    <p className="text-white font-bold text-md font-poppins ml-1">
+                                        Allow Uppercase
+                                    </p>
+                                </div>
+                                <div className="flex items-center mb-2 gap-3 bg-[#202320] px-8 py-3 rounded-xl ">
+                                    <input
+                                        checked={passwordOptions.lowercase}
+                                        value=""
+                                        onChange={(e) => {
+                                            let clone =
+                                                structuredClone(passwordOptions)
+                                            clone.lowercase = !clone.lowercase
+                                            setPasswordOptions(clone)
+                                            setGeneratedPassword(
+                                                generate(passwordOptions)
+                                            )
+                                        }}
+                                        type="checkbox"
+                                        className="scale-150 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                                    />
+                                    <p className="text-white font-bold text-md font-poppins ml-1">
+                                        Allow Lowercase
+                                    </p>
+                                </div>
+                                <div className="flex items-center mb-2 gap-3 bg-[#202320] px-8 py-3 rounded-xl ">
+                                    <input
                                         checked={passwordOptions.numbers}
                                         value=""
                                         onChange={(e) => {
@@ -120,17 +155,19 @@ const GeneratePassword = () => {
                                                 structuredClone(passwordOptions)
                                             clone.numbers = !clone.numbers
                                             setPasswordOptions(clone)
+                                            setGeneratedPassword(
+                                                generate(passwordOptions)
+                                            )
                                         }}
-                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                                    />
-                                    <label className="ml-2 text-sm font-medium text-black">
-                                        Allow Numbers
-                                    </label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input
-                                        id="default-checkbox"
                                         type="checkbox"
+                                        className="scale-150 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                                    />
+                                    <p className="text-white font-bold text-md font-poppins ml-1">
+                                        Allow Numbers
+                                    </p>
+                                </div>
+                                <div className="flex items-center mb-2 gap-3 bg-[#202320] px-8 py-3 rounded-xl ">
+                                    <input
                                         checked={passwordOptions.symbols}
                                         value=""
                                         onChange={(e) => {
@@ -138,17 +175,19 @@ const GeneratePassword = () => {
                                                 structuredClone(passwordOptions)
                                             clone.symbols = !clone.symbols
                                             setPasswordOptions(clone)
+                                            setGeneratedPassword(
+                                                generate(passwordOptions)
+                                            )
                                         }}
-                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                                    />
-                                    <label className="ml-2 text-sm font-medium text-black">
-                                        Allow Symbols
-                                    </label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <input
-                                        id="default-checkbox"
                                         type="checkbox"
+                                        className="scale-150 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                                    />
+                                    <p className="text-white font-bold text-md font-poppins ml-1">
+                                        Allow Symbols
+                                    </p>
+                                </div>
+                                <div className="flex items-center mb-2 gap-3 bg-[#202320] px-8 py-3 rounded-xl ">
+                                    <input
                                         checked={
                                             passwordOptions.excludeSimilarCharacters
                                         }
@@ -159,61 +198,46 @@ const GeneratePassword = () => {
                                             clone.excludeSimilarCharacters =
                                                 !clone.excludeSimilarCharacters
                                             setPasswordOptions(clone)
+                                            setGeneratedPassword(
+                                                generate(passwordOptions)
+                                            )
                                         }}
-                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                                        type="checkbox"
+                                        className="scale-150 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                                     />
-                                    <label className="ml-2 text-sm font-medium text-black">
+                                    <p className="text-white font-bold text-md font-poppins ml-1">
                                         Exclude Similar Characters
-                                    </label>
+                                    </p>
                                 </div>
-                                <div className="flex items-center mb-6">
+                                <div className="flex items-center mb-2 gap-3 bg-[#202320] px-8 py-3 rounded-xl ">
                                     <input
+                                        checked={passwordOptions.strict}
+                                        value=""
                                         onChange={(e) => {
                                             let clone =
                                                 structuredClone(passwordOptions)
                                             clone.strict = !clone.strict
                                             setPasswordOptions(clone)
-                                        }}
-                                        id="default-checkbox"
-                                        type="checkbox"
-                                        checked={passwordOptions.strict}
-                                        value=""
-                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                                    />
-                                    <label className="ml-2 text-sm font-medium text-black">
-                                        Strict
-                                    </label>
-                                </div>
-                                <label className="ml-2 text-sm font-medium text-black">
-                                    Password Length
-                                </label>
-                                <div className="flex items-center mb-10 gap-5">
-                                    <input
-                                        onChange={(e) => {
-                                            let clone =
-                                                structuredClone(passwordOptions)
-                                            clone.length = parseInt(
-                                                e.target.value
+                                            setGeneratedPassword(
+                                                generate(passwordOptions)
                                             )
-                                            setPasswordOptions(clone)
                                         }}
-                                        type="range"
-                                        min="12"
-                                        className="cursor-ew-resize w-52 appearance-none rounded-full bg-gray-200 disabled:cursor-not-allowed"
+                                        type="checkbox"
+                                        className="scale-150 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                                     />
-                                    <p className="w-2 ">
-                                        {passwordOptions.length}
+                                    <p className="text-white font-bold text-md font-poppins ml-1">
+                                        Strict Mode
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button
+                    {/* <button
                         type="submit"
-                        className="text-bold px-7 py-2.5 float-right text-lg font-semibold rounded bg-[#505BAF] text-white"
+                        className="text-bold px-7 py-2.5 float-right text-lg font-semibold rounded bg-[#202320] text-white"
                     >
                         Generate
-                    </button>
+                    </button> */}
                 </form>
             </div>
         </motion.div>

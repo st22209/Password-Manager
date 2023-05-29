@@ -5,6 +5,7 @@ fastapi
 pydantic
 aioredis
 pre-commit
+argon2-cffi
 python-jose
 tortoise-orm
 python-dotenv

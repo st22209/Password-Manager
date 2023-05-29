@@ -181,6 +181,10 @@ const BackupVault = ({
                                     Choose File
                                 </button>
                             </div>
+                            <div>
+                                <h1 className="font-bold text-2xl">Instructions</h1>
+                                <p className="text-center">Enter the password you used to encrypt the backup</p>
+                            </div>
                         </div>
                     </form>
                 </div>

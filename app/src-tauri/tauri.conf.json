@@ -27,7 +27,9 @@
             },
             "fs": {
                 "all": true,
-                "scope": ["**"]
+                "scope": [
+                    "**"
+                ]
             },
             "dialog": {
                 "all": true,
@@ -36,11 +38,15 @@
                 "message": true,
                 "open": true,
                 "save": true
+            },
+            "path": {
+                "all": true
             }
         },
         "bundle": {
             "active": true,
             "icon": [
+                "icons/icon.ico",
                 "icons/icon.icns",
                 "icons/icon.png",
                 "icons/1024.png",

@@ -1,6 +1,6 @@
 # Password Manager REST API
 
-The Password1 API is meant to be locally hosted, either on the same machine as the user or one machine in the house of the user.  It is used to provide an abtraction over the database to make things easier for the client. It manages storing multiple users and the passwords of all these users. It is to mention that all encryption is done client side so the server never has access to the master password or any  password in a user's account. 
+The Password1 API is meant to be locally hosted, either on the same machine as the user or one machine in the house of the user.  It is used to provide an abtraction over the database to make things easier for the client. It manages storing multiple users and the passwords of all these users. It is to mention that all encryption is done client side so the server never has access to the master password or any  password in a user's account. The API is built with the framework FastAPI as it a fast, reliable rest api framework for python.
 
 ## Code/File Structure
 ```bash

@@ -99,10 +99,6 @@ const Signup = () => {
                             let valid = runValidation(username, password)
                             if (!valid.success) {
                                 setShowErrorMessage(true)
-                                setTimeout(
-                                    () => setShowErrorMessage(false),
-                                    5000
-                                )
                                 return setErrorMessage({
                                     title: valid.error.title,
                                     body: valid.error.body,

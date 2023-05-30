@@ -147,10 +147,6 @@ const EditPasswordForm = ({
                                         title: validation.error.title,
                                         body: validation.error.body,
                                     })
-                                    setTimeout(
-                                        () => setShowErrorMessage(false),
-                                        5000
-                                    )
                                     return
                                 }
 
@@ -179,10 +175,6 @@ const EditPasswordForm = ({
                                         title: res.error.title,
                                         body: res.error.body,
                                     })
-                                    setTimeout(
-                                        () => setShowErrorMessage(false),
-                                        5000
-                                    )
                                     return
                                 }
                                 setShowErrorMessage(false)

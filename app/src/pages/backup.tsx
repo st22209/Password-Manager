@@ -170,10 +170,6 @@ const BackupVault = ({
                                     title: "Failed to restore from backup",
                                     body: "Most likely because the decryption password is incorrect",
                                 })
-                                setTimeout(
-                                    () => setShowErrorMessage(false),
-                                    5000
-                                )
                             }
                         }}
                     >

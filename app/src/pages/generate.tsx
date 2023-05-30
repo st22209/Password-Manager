@@ -48,14 +48,13 @@ const GeneratePassword = () => {
                 <form
                     onSubmit={(e) => {
                         e.preventDefault()
-                        setGeneratedPassword(generate(passwordOptions))
                     }}
-                    className="bg-[#848fec] rounded-lg shadow-2xl p-10  flex flex-col items-center"
+                    className="bg-[#606bc6] rounded-lg shadow-2xl p-10  flex flex-col items-center"
                 >
                     <div>
                         <div className="flex mb-5">
-                            <div className="px-3 py-1 bg-[#202320]  rounded-md flex gap-2">
-                                <div className="overflow-y-scroll overflow-x-auto placeholder:opacity-50 resize-none p-2 h-14 mt-2 text-white focus:border-indigo-400 focus:ring-indigo-300 focus:outline-none focus:ring focus:ring-opacity-40 w-[20rem] ">
+                            <div className="px-3 py-3 bg-[#202320]  rounded-md flex gap-2">
+                                <div className="overflow-y-scroll overflow-x-auto placeholder:opacity-50 resize-none p-2  text-white focus:border-indigo-400 focus:ring-indigo-300 focus:outline-none focus:ring focus:ring-opacity-40 w-[20rem] ">
                                     {generatedPassword}
                                 </div>
                                 <button
@@ -90,7 +89,7 @@ const GeneratePassword = () => {
                                             )
                                             setPasswordOptions(clone)
                                             setGeneratedPassword(
-                                                generate(passwordOptions)
+                                                generate(clone)
                                             )
                                         }}
                                         type="range"
@@ -116,7 +115,7 @@ const GeneratePassword = () => {
                                             clone.uppercase = !clone.uppercase
                                             setPasswordOptions(clone)
                                             setGeneratedPassword(
-                                                generate(passwordOptions)
+                                                generate(clone)
                                             )
                                         }}
                                         type="checkbox"
@@ -136,7 +135,7 @@ const GeneratePassword = () => {
                                             clone.lowercase = !clone.lowercase
                                             setPasswordOptions(clone)
                                             setGeneratedPassword(
-                                                generate(passwordOptions)
+                                                generate(clone)
                                             )
                                         }}
                                         type="checkbox"
@@ -156,7 +155,7 @@ const GeneratePassword = () => {
                                             clone.numbers = !clone.numbers
                                             setPasswordOptions(clone)
                                             setGeneratedPassword(
-                                                generate(passwordOptions)
+                                                generate(clone)
                                             )
                                         }}
                                         type="checkbox"
@@ -176,7 +175,7 @@ const GeneratePassword = () => {
                                             clone.symbols = !clone.symbols
                                             setPasswordOptions(clone)
                                             setGeneratedPassword(
-                                                generate(passwordOptions)
+                                                generate(clone)
                                             )
                                         }}
                                         type="checkbox"
@@ -199,7 +198,7 @@ const GeneratePassword = () => {
                                                 !clone.excludeSimilarCharacters
                                             setPasswordOptions(clone)
                                             setGeneratedPassword(
-                                                generate(passwordOptions)
+                                                generate(clone)
                                             )
                                         }}
                                         type="checkbox"
@@ -219,7 +218,7 @@ const GeneratePassword = () => {
                                             clone.strict = !clone.strict
                                             setPasswordOptions(clone)
                                             setGeneratedPassword(
-                                                generate(passwordOptions)
+                                                generate(clone)
                                             )
                                         }}
                                         type="checkbox"

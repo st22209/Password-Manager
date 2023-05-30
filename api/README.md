@@ -2,6 +2,43 @@
 
 The Password1 API is meant to be locally hosted, either on the same machine as the user or one machine in the house of the user.  It is used to provide an abtraction over the database to make things easier for the client. It manages storing multiple users and the passwords of all these users. It is to mention that all encryption is done client side so the server never has access to the master password or any  password in a user's account. 
 
+## Code/File Structure
+```bash
+.
+├── Makefile # for command aliases
+├── README.md # this readme 
+├── assets # folder with assets for the API
+│   └── markdown
+│       └── description.md # swagger docs description
+├── src
+│   ├── core # where all reusable code goes
+│   │   ├── __init__.py
+│   │   ├── db # where the db config and db is stored
+│   │   │   ├── __init__.py
+│   │   │   └── tortoise_conf.py
+│   │   ├── helpers
+│   │   │   ├── __init__.py
+│   │   │   ├── argon_hash.py # functions for hashing and verifying hashes
+│   │   │   └── exceptions.py # custom errors thrown by the api
+│   │   └── models # classes for the api
+│   │       ├── __init__.py
+│   │       ├── api.py # fastapi subclass
+│   │       ├── passwords.py # database models for a password record
+│   │       └── users.py # db models for a user
+│   ├── main.py # main startup script
+│   ├── requirements.txt # dependencies list
+│   └── routes
+│       ├── __init__.py
+│       ├── other.py # other routes that dont really matter
+│       ├── passwords.py # routes related to passwords
+│       └── users.py # routes related to users
+└── tests # test code I decided to keep for evidence
+    ├── __init__.py
+    └── username_validation.py
+
+10 directories, 24 files
+```
+
 ## Running The REST API
 **Note you must have python and pip installed to run this.**  
 To run the API you need to first download the source code. You can either do that by downloading the repository as a zip file [here](https://github.com/st22209/Password-Manager/archive/refs/heads/main.zip), or you  cloning the repo with:

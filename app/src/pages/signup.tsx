@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { runValidation, getUserKeys, signupSubmitCallback } from "../core"
 import { ErrorMessage } from "../core/types"
 import { motion, AnimatePresence } from "framer-motion"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const Signup = () => {
     const navigate = useNavigate()
@@ -12,6 +13,7 @@ const Signup = () => {
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
 
+    const [showPassword, setShowPassword] = useState<boolean>(false)
     const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<ErrorMessage>({
         title: "",
@@ -86,7 +88,7 @@ const Signup = () => {
                 <h1 className="text-bold text-white text-[5rem] font-poppins">
                     Signup
                 </h1>
-                <div>
+                <div className="flex">
                     <form
                         onSubmit={async (
                             e: React.FormEvent<HTMLFormElement>
@@ -143,7 +145,7 @@ const Signup = () => {
 
                         <input
                             className="bg-transparent w-full py-4 px-1 leading-tight focus:outline-none border-b-2 border-white text-[1.2rem] text-[#999999] mb-10"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             value={password}
                             placeholder="Master Password"
                             onChange={(e) => {
@@ -172,6 +174,23 @@ const Signup = () => {
                             </button>
                         </div>
                     </form>
+                    <div className="flex mb-7">
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="text-white"
+                        >
+                            {showPassword ? (
+                                <FontAwesomeIcon
+                                    icon={"fa-solid fa-eye" as any}
+                                />
+                            ) : (
+                                <FontAwesomeIcon
+                                    icon={"fa-solid fa-eye-slash" as any}
+                                />
+                            )}
+                        </button>
+                    </div>
                 </div>
             </motion.div>
         </div>

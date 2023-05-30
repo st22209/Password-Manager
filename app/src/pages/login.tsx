@@ -5,6 +5,7 @@ import { getUserKeys, authGetUser } from "../core"
 import { useNavigate } from "react-router-dom"
 import { ErrorMessage } from "../core/types"
 import { motion, AnimatePresence } from "framer-motion"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const Login = () => {
     const navigate = useNavigate()
@@ -12,6 +13,7 @@ const Login = () => {
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
 
+    const [showPassword, setShowPassword] = useState<boolean>(false)
     const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<ErrorMessage>({
         title: "",
@@ -81,7 +83,7 @@ const Login = () => {
                 <h1 className="text-bold text-white text-[5rem] font-poppins">
                     Login
                 </h1>
-                <div>
+                <div className="flex">
                     <form
                         onSubmit={async (
                             e: React.FormEvent<HTMLFormElement>
@@ -116,15 +118,18 @@ const Login = () => {
                             onChange={(e) => setUsername(e.target.value)}
                             required
                         ></input>
+
                         <input
                             className="bg-transparent w-full py-4 px-1 leading-tight focus:outline-none border-b-2 border-white text-[1.2rem] text-[#999999] mb-10"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             value={password}
                             placeholder="Master Password"
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                        ></input>
+                        />
+
                         <br />
+
                         <div className="flex flex-col justify-center items-center">
                             <button
                                 type="submit"
@@ -134,6 +139,23 @@ const Login = () => {
                             </button>
                         </div>
                     </form>
+                    <div className="flex mb-7">
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="text-white"
+                        >
+                            {showPassword ? (
+                                <FontAwesomeIcon
+                                    icon={"fa-solid fa-eye" as any}
+                                />
+                            ) : (
+                                <FontAwesomeIcon
+                                    icon={"fa-solid fa-eye-slash" as any}
+                                />
+                            )}
+                        </button>
+                    </div>
                 </div>
             </motion.div>
         </div>

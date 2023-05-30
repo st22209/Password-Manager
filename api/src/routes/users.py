@@ -39,7 +39,7 @@ async def get_user(
     if user is None:
         raise APIHTTPExceptions.USER_NOT_FOUND(user_id)
 
-    await verify_auth_key(user.id, auth_key)  # type: ignore
+    await verify_auth_key(str(user.id), auth_key)
     pyd = await user_pyd.from_tortoise_orm(user)
 
     return {"success": True, "user": pyd}

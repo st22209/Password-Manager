@@ -106,6 +106,21 @@ const BackupVault = ({
                                     Choose File
                                 </button>
                             </div>
+                            <div>
+                                <h1 className="font-bold text-2xl text-center p-3">
+                                    Instructions
+                                </h1>
+                                <ul className="list-decimal w-96">
+                                    <li>
+                                        Enter the a password which will be used
+                                        to encrypt the backup
+                                    </li>
+                                    <li>Make sure this password is secure</li>
+                                    <li>
+                                        Choose where you want to save the backup, and the backup name
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </form>
                     <form
@@ -182,8 +197,23 @@ const BackupVault = ({
                                 </button>
                             </div>
                             <div>
-                                <h1 className="font-bold text-2xl">Instructions</h1>
-                                <p className="text-center">Enter the password you used to encrypt the backup</p>
+                                <h1 className="font-bold text-2xl text-center">
+                                    Instructions
+                                </h1>
+                                <ul className="list-decimal w-96 p-3">
+                                    <li>
+                                        Enter the same password you used to
+                                        encrypt the backup
+                                    </li>
+                                    <li>
+                                        Next choose the file where the backup is
+                                        stored
+                                    </li>
+                                    <li>
+                                        The passwords from the backup file will
+                                        be added to you database
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </form>

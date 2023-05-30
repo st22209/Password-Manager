@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { HeroVault } from "../assets"
 import { motion } from "framer-motion"
-import WavyText from "./wavy"
+import WavyText from "../components/wavy"
 
 const NewUser = () => {
     return (

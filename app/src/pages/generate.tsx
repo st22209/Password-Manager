@@ -54,7 +54,7 @@ const GeneratePassword = () => {
                     <div>
                         <div className="flex mb-5">
                             <div className="px-3 py-3 bg-[#202320]  rounded-md flex gap-2">
-                                <div className="overflow-y-scroll overflow-x-auto placeholder:opacity-50 resize-none p-2  text-white focus:border-indigo-400 focus:ring-indigo-300 focus:outline-none focus:ring focus:ring-opacity-40 w-[20rem] ">
+                                <div className="placeholder:opacity-50 resize-none p-2  text-white focus:border-indigo-400 focus:ring-indigo-300 focus:outline-none focus:ring focus:ring-opacity-40 w-[20rem] ">
                                     {generatedPassword}
                                 </div>
                                 <button
@@ -231,12 +231,6 @@ const GeneratePassword = () => {
                             </div>
                         </div>
                     </div>
-                    {/* <button
-                        type="submit"
-                        className="text-bold px-7 py-2.5 float-right text-lg font-semibold rounded bg-[#202320] text-white"
-                    >
-                        Generate
-                    </button> */}
                 </form>
             </div>
         </motion.div>

@@ -55,7 +55,7 @@ register_tortoise(
 )
 
 # constant for the port the api will use
-PORT: Final = 8443
+PORT: Final = 8469
 
 # check weather to startup api in dev mode or not
 devmode = os.environ.get("DEVMODE", "").lower()
@@ -63,8 +63,15 @@ if devmode not in ["true", "false"]:
     raise InvalidDevmodeValue(provided=devmode)
 
 # set the uvicorn server options based one dev mode or not
+SSL_CERTFILE_PATH: Final = os.path.join(os.path.dirname(__file__), "cert.pem")
+SSL_KEYFILE_PATH: Final = os.path.join(os.path.dirname(__file__), "key.pem")
+
 options = (
-    {"app": "main:app", "port": PORT, "reload": True}
+    {
+        "app": "main:app",
+        "port": PORT,
+        "reload": True,
+    }
     if devmode == "true"
     else {
         "app": "main:app",
@@ -72,6 +79,8 @@ options = (
         "port": PORT,
         "access_log": False,
         "log_level": "critical",
+        "ssl_keyfile": SSL_KEYFILE_PATH,
+        "ssl_certfile": SSL_CERTFILE_PATH,
     }
 )
 

@@ -6,7 +6,7 @@ import {
     User,
 } from "./types"
 
-const BASE_URL = "http://127.0.0.1:8443/api"
+const BASE_URL = "https://password.fusionsid.com/api"
 const STATUS_CODES = {
     INVALID: 422,
     CONFLICT: 409,
@@ -73,9 +73,11 @@ async function postNewPassword(authKeyHash: string, passwordData: NewPassword) {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            "auth-key": authKeyHash,
         },
         body: JSON.stringify(passwordData),
     }
+    console.log(response_data.body)
     let response
     try {
         response = await fetch(API_URL, response_data)
@@ -89,6 +91,7 @@ async function postNewPassword(authKeyHash: string, passwordData: NewPassword) {
             },
         }
     }
+    console.log(response)
 
     let response_json = await response.json()
     if (response_json["detail"]["success"] === false) {
@@ -128,6 +131,7 @@ async function editPassword(
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            "auth-key": authKeyHash,
         },
         body: JSON.stringify(passwordData),
     }
@@ -180,6 +184,7 @@ async function authGetUser(
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            "auth-key": authKey,
         },
     }
     let response
@@ -240,14 +245,15 @@ async function getPassword(
 ): Promise<unknown> {
     let API_URL
     id === null || id === undefined
-        ? (API_URL = `${BASE_URL}/passwords?owner_id=${owner_id}&auth_key=${authKey}`)
-        : (API_URL = `${BASE_URL}/passwords?owner_id=${owner_id}&auth_key=${authKey}&password_id=${id}`)
+        ? (API_URL = `${BASE_URL}/passwords?owner_id=${owner_id}`)
+        : (API_URL = `${BASE_URL}/passwords?owner_id=${owner_id}&password_id=${id}`)
 
     let response_data = {
         method: "GET",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            "auth-key": authKey,
         },
     }
     let response
@@ -302,6 +308,7 @@ async function deletePassword(
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            "auth-key": authKey,
         },
     }
     let response

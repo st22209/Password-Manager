@@ -7,8 +7,9 @@ use std::fs;
 fn save_file(path: String, contents: String) {
     fs::write(path, contents).unwrap();
 }
-
 fn main() {
+    let _ = fix_path_env::fix();
+
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![save_file])
         .plugin(tauri_plugin_store::Builder::default().build())
